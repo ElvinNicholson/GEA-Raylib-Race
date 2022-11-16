@@ -6,6 +6,10 @@
 
 #include "raylib-cpp.hpp"
 #include "raylib.h"
+#include "cmath"
+
+#include "GameObject/GameObject.h"
+#include "GameObject/Car.h"
 
 class Game
 {
@@ -20,13 +24,8 @@ protected:
 private:
     raylib::Camera3D camera;
 
-    raylib::Model model;
-    raylib::Texture2D model_texture;
-    raylib::BoundingBox model_bound;
-    raylib::Vector3 model_pos;
-    float pitch;
-    float yaw;
-    float roll;
+    std::unique_ptr<Car> car;
+    std::unique_ptr<GameObject> gate;
 };
 
 
