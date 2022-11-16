@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.14)
 project(raylib_cpp_example)
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+
 # raylib
 find_package(raylib QUIET)
 if (NOT raylib_FOUND)
@@ -26,7 +28,7 @@ if (NOT raylib_cpp_FOUND)
 endif()
 
 # This is the main part:
-set(SOURCES main.cpp)
+set(SOURCES main.cpp src/Game.cpp src/Game.h)
 add_executable(${PROJECT_NAME} ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
 target_link_libraries(${PROJECT_NAME} PUBLIC raylib raylib_cpp)
