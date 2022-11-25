@@ -14,6 +14,8 @@ public:
 protected:
 
 private:
+    void controls(float dt);
+
     float speed;
     float yaw_cam;
 };

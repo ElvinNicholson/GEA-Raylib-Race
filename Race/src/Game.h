@@ -10,6 +10,7 @@
 
 #include "GameObject/GameObject.h"
 #include "GameObject/Car.h"
+#include "GameObject/MyBoundingBox.h"
 
 class Game
 {
@@ -26,6 +27,10 @@ private:
 
     std::unique_ptr<Car> car;
     std::unique_ptr<GameObject> gate;
+
+    std::unique_ptr<MyBoundingBox> box;
+
+    float angle;
 };
 
 

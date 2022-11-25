@@ -10,7 +10,27 @@ Car::Car() : GameObject("../Data/Models/Car3.obj", "../Data/Materials/car Textur
 void Car::updateCar()
 {
     float dt = GetFrameTime();
+    controls(dt);
 
+    std::cout << model.transform.m6 << std::endl;
+}
+
+raylib::Vector3 Car::getCamPos()
+{
+    return {model_pos.x - cos(yaw_cam * DEG2RAD) * 20, 7, model_pos.z + sin(yaw_cam * DEG2RAD) * 20};
+}
+
+raylib::BoundingBox Car::getBoundingBox()
+{
+    raylib::BoundingBox new_box;
+    new_box = BoundingBox{{model_pos.x - 2,model_pos.y - 2,model_pos.z - 2},
+                          {model_pos.x + 2,model_pos.y + 2,model_pos.z + 2}};
+
+    return new_box;
+}
+
+void Car::controls(float dt)
+{
     if (IsKeyDown('W'))
     {
         move({cos(yaw * DEG2RAD) * speed * dt, 0, -sin(yaw * DEG2RAD) * speed * dt});
@@ -55,18 +75,4 @@ void Car::updateCar()
         else if (yaw_cam > yaw) yaw_cam -= 0.9;
         else if (yaw_cam < yaw) yaw_cam += 0.9;
     }
-}
-
-raylib::Vector3 Car::getCamPos()
-{
-    return {model_pos.x - cos(yaw_cam * DEG2RAD) * 20, 7, model_pos.z + sin(yaw_cam * DEG2RAD) * 20};
-}
-
-raylib::BoundingBox Car::getBoundingBox()
-{
-    raylib::BoundingBox new_box;
-    new_box = BoundingBox{{model_pos.x - 2,model_pos.y - 2,model_pos.z - 2},
-                          {model_pos.x + 2,model_pos.y + 2,model_pos.z + 2}};
-
-    return new_box;
 }

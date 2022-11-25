@@ -43,3 +43,8 @@ void GameObject::setScale(float _scale)
 {
     scale = _scale;
 }
+
+Mesh GameObject::getMesh()
+{
+    return model.meshes[0];
+}

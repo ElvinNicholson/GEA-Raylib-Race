@@ -14,6 +14,7 @@ public:
     void setPosition(raylib::Vector3 new_position);
     raylib::Vector3 getPosition();
     void setScale(float _scale);
+    Mesh getMesh();
 
 protected:
     raylib::Model model;
