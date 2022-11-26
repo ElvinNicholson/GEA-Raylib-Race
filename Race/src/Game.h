@@ -10,6 +10,7 @@
 
 #include "GameObject/GameObject.h"
 #include "GameObject/Car.h"
+#include "Race.h"
 
 class Game
 {
@@ -24,8 +25,9 @@ protected:
 private:
     raylib::Camera3D camera;
 
+    std::shared_ptr<raylib::BoundingBox> player_collider;
     std::unique_ptr<Car> car;
-    std::unique_ptr<GameObject> gate;
+    std::unique_ptr<Race> race;
 };
 
 

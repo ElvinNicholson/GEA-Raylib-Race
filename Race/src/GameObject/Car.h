@@ -2,18 +2,21 @@
 #define RAYLIB_CPP_EXAMPLE_CAR_H
 
 #include "GameObject.h"
+#include <memory>
 
 class Car : public GameObject
 {
 public:
-    Car();
-    void updateCar();
+    Car(std::shared_ptr<raylib::BoundingBox> _player_box);
+    void updateCar(float dt);
     raylib::Vector3 getCamPos();
-    raylib::BoundingBox getBoundingBox() override;
 
 protected:
 
 private:
+    void updateBox();
+
+    std::shared_ptr<raylib::BoundingBox> player_box;
     float speed;
     float yaw_cam;
 };

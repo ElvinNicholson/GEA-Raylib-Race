@@ -18,7 +18,7 @@ public:
 protected:
     raylib::Model model;
     raylib::Texture2D model_texture;
-    raylib::BoundingBox model_bound;
+    raylib::BoundingBox model_box;
     raylib::Vector3 model_pos;
     float pitch;
     float yaw;

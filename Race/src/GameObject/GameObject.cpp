@@ -5,7 +5,7 @@ GameObject::GameObject(const char *model_path, const char *material_path)
     model = LoadModel(model_path);
     model_texture = LoadTexture(material_path);
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = model_texture;
-    model_bound = GetMeshBoundingBox(model.meshes[0]);
+    model_box = GetMeshBoundingBox(model.meshes[0]);
     model_pos = Vector3 {0, 0, 0};
     pitch = 0.0f;
     yaw = 0.0f;
@@ -20,8 +20,8 @@ void GameObject::render()
 
 raylib::BoundingBox GameObject::getBoundingBox()
 {
-    model_bound = GetMeshBoundingBox(model.meshes[0]);
-    return model_bound;
+    model_box = GetMeshBoundingBox(model.meshes[0]);
+    return model_box;
 }
 
 void GameObject::move(raylib::Vector3 movement)

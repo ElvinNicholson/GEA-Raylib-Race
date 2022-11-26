@@ -1,15 +1,14 @@
 #include "Car.h"
 #include <iostream>
 
-Car::Car() : GameObject("../Data/Models/Car3.obj", "../Data/Materials/car Texture.png")
+Car::Car(std::shared_ptr<raylib::BoundingBox> _player_box) : GameObject("../Data/Models/Car3.obj", "../Data/Materials/car Texture.png"), player_box(_player_box)
 {
     setPosition({0, 2.5, 0});
     speed = 40;
 }
 
-void Car::updateCar()
+void Car::updateCar(float dt)
 {
-    float dt = GetFrameTime();
 
     if (IsKeyDown('W'))
     {
@@ -55,6 +54,8 @@ void Car::updateCar()
         else if (yaw_cam > yaw) yaw_cam -= 0.9;
         else if (yaw_cam < yaw) yaw_cam += 0.9;
     }
+
+    updateBox();
 }
 
 raylib::Vector3 Car::getCamPos()
@@ -62,11 +63,11 @@ raylib::Vector3 Car::getCamPos()
     return {model_pos.x - cos(yaw_cam * DEG2RAD) * 20, 7, model_pos.z + sin(yaw_cam * DEG2RAD) * 20};
 }
 
-raylib::BoundingBox Car::getBoundingBox()
+void Car::updateBox()
 {
     raylib::BoundingBox new_box;
     new_box = BoundingBox{{model_pos.x - 2,model_pos.y - 2,model_pos.z - 2},
                           {model_pos.x + 2,model_pos.y + 2,model_pos.z + 2}};
 
-    return new_box;
+    *player_box = new_box;
 }

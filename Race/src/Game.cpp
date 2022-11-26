@@ -2,8 +2,14 @@
 
 Game::Game()
 {
-    car.reset(new Car());
-    gate.reset(new GameObject("../Data/Models/Gate.obj", ""));
+    player_collider = std::make_shared<raylib::BoundingBox>();
+
+    car.reset(new Car(player_collider));
+    race.reset(new Race(player_collider));
+    race->setLaps(1);
+    race->setModel("../Data/Models/Gate.obj");
+    race->setMaterial("");
+    race->setCheckpoints(1);
 }
 
 bool Game::init()
@@ -22,25 +28,20 @@ bool Game::init()
 void Game::update()
 {
     UpdateCamera(&camera);
+    float dt = GetFrameTime();
 
-    car->updateCar();
+    car->updateCar(dt);
+    race->update(dt);
     camera.position = car->getCamPos();
     camera.target = car->getPosition();
     camera.target.y = 4;
-
-    if (CheckCollisionBoxes(car->getBoundingBox(), gate->getBoundingBox()))
-    {
-        std::cout << "COLLIDE" << std::endl;
-    }
 }
 
 void Game::render()
 {
  BeginMode3D(camera);
     car->render();
-    gate->render();
+    race->render();
     DrawGrid(100, 10.f);
-    DrawBoundingBox(gate->getBoundingBox(), RED);
-    DrawBoundingBox(car->getBoundingBox(), BLUE);
  EndMode3D();
 }
