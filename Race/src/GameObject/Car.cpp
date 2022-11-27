@@ -3,7 +3,7 @@
 
 Car::Car(std::shared_ptr<raylib::BoundingBox> _player_box) : GameObject("../Data/Models/Car3.obj", "../Data/Materials/car Texture.png"), player_box(_player_box)
 {
-    setPosition({0, 2.5, 0});
+    setPosition({0, 2.5, -20});
     speed = 40;
 }
 

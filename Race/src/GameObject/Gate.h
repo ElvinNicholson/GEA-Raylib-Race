@@ -3,13 +3,19 @@
 
 #include "GameObject.h"
 #include <memory>
-#include <iostream>
 
 class Gate : public GameObject
 {
 public:
-    Gate(const char *model_path, const char *material_path, int _gateNum, std::shared_ptr<raylib::BoundingBox> _player_collider);
-    bool playerCollision();
+    Gate(std::string model_path, std::string material_path, int _gateNum, std::shared_ptr<raylib::BoundingBox> _player_collider);
+    void setPosition(raylib::Vector3 new_position) override;
+    void renderBoundingBox();
+    bool isPlayerColliding();
+    void passGate();
+    bool isGatePassed();
+    void resetLap();
+
+    raylib::BoundingBox bounding_box;
 
 protected:
 
@@ -17,7 +23,6 @@ private:
     std::shared_ptr<raylib::BoundingBox> player_collider;
 
     bool passed;
-    bool isColliding;
     int gateNum;
 
 };

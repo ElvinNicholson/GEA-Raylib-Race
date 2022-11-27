@@ -3,6 +3,7 @@
 
 #include "GameObject/Gate.h"
 #include <memory>
+#include <iostream>
 
 class Race
 {
@@ -20,9 +21,10 @@ protected:
 
 private:
     void createGate(int gateNumber);
+    void finishLap();
 
-    const char* model_path;
-    const char* mat_path;
+    std::string model_path;
+    std::string mat_path;
 
     bool isRunning;
     bool isWon;
