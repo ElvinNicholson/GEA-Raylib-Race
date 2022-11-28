@@ -10,7 +10,8 @@ class Race
 public:
     Race(std::shared_ptr<raylib::BoundingBox> _player_collider);
     void update(float dt);
-    void render();
+    void render2D();
+    void render3D();
     void resetRace();
     void setLaps(int number_of_laps);
     void setCheckpoints(int number_of_checkpoints);
@@ -22,15 +23,18 @@ protected:
 private:
     void createGate(int gateNumber);
     void finishLap();
+    void updateLapsText();
 
     std::string model_path;
     std::string mat_path;
 
+    bool runOnce;
     bool isRunning;
     bool isWon;
 
     int lapsTotal;
     int lapsCurrent;
+    std::string lapsText;
 
     int currentGate;
     int lastGate;

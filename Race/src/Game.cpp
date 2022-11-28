@@ -41,7 +41,9 @@ void Game::render()
 {
  BeginMode3D(camera);
     car->render();
-    race->render();
+    race->render3D();
     DrawGrid(100, 10.f);
  EndMode3D();
+
+    race->render2D();
 }

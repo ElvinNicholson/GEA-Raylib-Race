@@ -12,6 +12,12 @@ void Race::update(float dt)
         return;
     }
 
+    if (runOnce)
+    {
+        updateLapsText();
+        runOnce = false;
+    }
+
 
     if ((checkpoints.at(currentGate).isPlayerColliding() && currentGate == 0) ||
         (checkpoints.at(currentGate).isPlayerColliding() && checkpoints.at(lastGate).isGatePassed()))
@@ -26,9 +32,17 @@ void Race::update(float dt)
             finishLap();
         }
     }
+
+    currentTime += dt;
 }
 
-void Race::render()
+void Race::render2D()
+{
+    DrawText(TextFormat("Time : %02.02f s", currentTime), 700, 50, 80, BLACK);
+    DrawText(lapsText.c_str(), 60, 900, 80, BLACK);
+}
+
+void Race::render3D()
 {
     for (auto& gate : checkpoints)
     {
@@ -39,6 +53,7 @@ void Race::render()
 
 void Race::resetRace()
 {
+    runOnce = true;
     isRunning = true;
     isWon = false;
     lapsCurrent = 0;
@@ -58,6 +73,7 @@ void Race::finishLap()
         isRunning = false;
         isWon = true;
     }
+    updateLapsText();
 
     currentGate = 0;
     for (auto& gate : checkpoints)
@@ -69,6 +85,23 @@ void Race::finishLap()
 void Race::setLaps(int number_of_laps)
 {
     lapsTotal = number_of_laps;
+}
+
+
+void Race::updateLapsText()
+{
+    int lap_cur;
+
+    if (lapsCurrent > lapsTotal)
+    {
+        lap_cur = lapsCurrent;
+    }
+    else
+    {
+        lap_cur = lapsCurrent + 1;
+    }
+
+    lapsText = "Lap " + std::to_string(lap_cur) + " / " + std::to_string(lapsTotal + 1);
 }
 
 void Race::setCheckpoints(int number_of_checkpoints)
