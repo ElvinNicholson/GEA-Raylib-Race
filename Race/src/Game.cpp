@@ -8,7 +8,8 @@ Game::Game()
     race.reset(new Race(player_collider));
     race->setLaps(1);
     race->setModel("../Data/Models/Gate.obj");
-    race->setMaterial("../Data/Materials/Green.png");
+    race->setInactiveMaterial("../Data/Materials/Red.png");
+    race->setActiveMaterial("../Data/Materials/Green.png");
     race->setCheckpoints(4);
 }
 

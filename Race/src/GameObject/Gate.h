@@ -14,6 +14,7 @@ public:
     void passGate();
     bool isGatePassed();
     void resetLap();
+    void setMaterial(const char *material_path);
 
     raylib::BoundingBox bounding_box;
 

@@ -15,6 +15,8 @@ void Race::update(float dt)
     if (runOnce)
     {
         updateLapsText();
+        checkpoints.at(currentGate).setMaterial(active_mat_path.c_str());
+
         runOnce = false;
     }
 
@@ -31,6 +33,9 @@ void Race::update(float dt)
         {
             finishLap();
         }
+
+        checkpoints.at(lastGate).setMaterial(inactive_mat_path.c_str());
+        checkpoints.at(currentGate).setMaterial(active_mat_path.c_str());
     }
 
     currentTime += dt;
@@ -114,7 +119,7 @@ void Race::setCheckpoints(int number_of_checkpoints)
 
 void Race::createGate(int gateNumber)
 {
-    checkpoints.emplace_back(Gate(model_path, mat_path, gateNumber, player_collider));
+    checkpoints.emplace_back(Gate(model_path, inactive_mat_path, gateNumber, player_collider));
     checkpoints.back().setPosition({0, 0, gateNumber * 20.0f});
 }
 
@@ -123,7 +128,12 @@ void Race::setModel(std::string _model_path)
     model_path = _model_path;
 }
 
-void Race::setMaterial(std::string _mat_path)
+void Race::setInactiveMaterial(std::string _mat_path)
 {
-    mat_path = _mat_path;
+    inactive_mat_path = _mat_path;
+}
+
+void Race::setActiveMaterial(std::string _mat_path)
+{
+    active_mat_path = _mat_path;
 }

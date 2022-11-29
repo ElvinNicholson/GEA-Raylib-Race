@@ -41,3 +41,9 @@ void Gate::resetLap()
 {
     passed = false;
 }
+
+void Gate::setMaterial(const char *material_path)
+{
+    model_texture = LoadTexture(material_path);
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = model_texture;
+}
