@@ -3,6 +3,8 @@
 Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider) : player_collider(_player_collider)
 {
     resetRace();
+
+    waypoint = LoadTexture("../Data/Texture/Waypoint.png");
 }
 
 void Race::update(float dt)
@@ -16,6 +18,7 @@ void Race::update(float dt)
     {
         updateLapsText();
         checkpoints.at(currentGate).setMaterial(active_mat_path.c_str());
+        checkpoints.at(nextGate).setMaterial(next_active_mat_path.c_str());
 
         runOnce = false;
     }
@@ -28,6 +31,12 @@ void Race::update(float dt)
         checkpoints.at(currentGate).passGate();
         currentGate++;
         lastGate = currentGate - 1;
+        nextGate = currentGate + 1;
+
+        if (nextGate > checkpoints.size() - 1)
+        {
+            nextGate = 0;
+        }
 
         if (currentGate == checkpoints.size())
         {
@@ -36,15 +45,36 @@ void Race::update(float dt)
 
         checkpoints.at(lastGate).setMaterial(inactive_mat_path.c_str());
         checkpoints.at(currentGate).setMaterial(active_mat_path.c_str());
+        checkpoints.at(nextGate).setMaterial(next_active_mat_path.c_str());
     }
 
     currentTime += dt;
 }
 
-void Race::render2D()
+void Race::render2D(Camera camera)
 {
     DrawText(TextFormat("Time : %02.02f s", currentTime), 700, 50, 80, BLACK);
     DrawText(lapsText.c_str(), 60, 900, 80, BLACK);
+
+    if (!isRunning)
+    {
+        return;
+    }
+
+    raylib::Vector2 new_pos = GetWorldToScreen(checkpoints.at(currentGate).getPosition(), camera);
+    new_pos.x = new_pos.x - 75;
+    new_pos.y = new_pos.y - 200;
+    DrawTextureEx(waypoint, new_pos, 0, 0.3, WHITE);
+
+//    if (new_pos.x < 0 || new_pos.x > GetScreenWidth())
+//    {
+//        std::cout << "OFFSCREEN" << std::endl;
+//    }
+
+//    if (Vector3DotProduct((checkpoints.at(currentGate).getPosition() - camera.position), CAMERA FORWARD TRANSFORM) < 0)
+//    {
+//        std::cout << "OFFSCREEN" << std::endl;
+//    }
 }
 
 void Race::render3D()
@@ -65,6 +95,7 @@ void Race::resetRace()
     currentTime = 0;
     currentGate = 0;
     lastGate = 0;
+    nextGate = 1;
 }
 
 void Race::finishLap()
@@ -81,6 +112,8 @@ void Race::finishLap()
     updateLapsText();
 
     currentGate = 0;
+    nextGate = 1;
+
     for (auto& gate : checkpoints)
     {
         gate.resetLap();
@@ -136,4 +169,9 @@ void Race::setInactiveMaterial(std::string _mat_path)
 void Race::setActiveMaterial(std::string _mat_path)
 {
     active_mat_path = _mat_path;
+}
+
+void Race::setNextActiveMaterial(std::string _mat_path)
+{
+    next_active_mat_path = _mat_path;
 }

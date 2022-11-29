@@ -10,7 +10,8 @@ Game::Game()
     race->setModel("../Data/Models/Gate.obj");
     race->setInactiveMaterial("../Data/Materials/Red.png");
     race->setActiveMaterial("../Data/Materials/Green.png");
-    race->setCheckpoints(4);
+    race->setNextActiveMaterial("../Data/Materials/Yellow.png");
+    race->setCheckpoints(10);
 }
 
 bool Game::init()
@@ -46,5 +47,5 @@ void Game::render()
     DrawGrid(100, 10.f);
  EndMode3D();
 
-    race->render2D();
+    race->render2D(camera);
 }
