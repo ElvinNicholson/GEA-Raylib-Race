@@ -64,17 +64,31 @@ void Race::render2D(Camera camera)
     raylib::Vector2 new_pos = GetWorldToScreen(checkpoints.at(currentGate).getPosition(), camera);
     new_pos.x = new_pos.x - 75;
     new_pos.y = new_pos.y - 200;
+
+    Vector3 forward = Vector3Normalize(Vector3Subtract(camera.target, camera.position));
+    Vector3 object = Vector3Normalize(Vector3Subtract(camera.position, checkpoints.at(currentGate).getPosition()));
+    forward.y = 0;
+    object.y = 0;
+    float angle = Vector3Angle(forward, object) * RAD2DEG;
+
+    //std::cout << new_pos.x << std::endl;
+
+    if (angle < 140)
+    {
+        //std::cout << angle << std::endl;
+        if (new_pos.x < GetScreenWidth() / 2)
+        {
+            new_pos.x = 0;
+            new_pos.y = GetScreenHeight() / 2 - waypoint.height * 0.3 * 0.5;
+        }
+        else
+        {
+            new_pos.x = GetScreenWidth() - waypoint.width * 0.3;
+            new_pos.y = GetScreenHeight() / 2 - waypoint.height * 0.3 * 0.5;
+        }
+    }
+
     DrawTextureEx(waypoint, new_pos, 0, 0.3, WHITE);
-
-//    if (new_pos.x < 0 || new_pos.x > GetScreenWidth())
-//    {
-//        std::cout << "OFFSCREEN" << std::endl;
-//    }
-
-//    if (Vector3DotProduct((checkpoints.at(currentGate).getPosition() - camera.position), CAMERA FORWARD TRANSFORM) < 0)
-//    {
-//        std::cout << "OFFSCREEN" << std::endl;
-//    }
 }
 
 void Race::render3D()
