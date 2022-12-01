@@ -8,10 +8,10 @@ Game::Game()
     race.reset(new Race(player_collider));
     race->setLaps(1);
     race->setModel("../Data/Models/Gate.obj");
+    race->setCheckpoints(10);
     race->setInactiveMaterial("../Data/Materials/Red.png");
     race->setActiveMaterial("../Data/Materials/Green.png");
     race->setNextActiveMaterial("../Data/Materials/Yellow.png");
-    race->setCheckpoints(10);
 }
 
 bool Game::init()

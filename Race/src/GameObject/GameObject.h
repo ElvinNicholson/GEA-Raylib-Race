@@ -7,12 +7,14 @@
 class GameObject
 {
 public:
+    GameObject();
     GameObject(const char *model_path, const char *material_path);
     void render();
     void move(raylib::Vector3 movement);
     virtual void setPosition(raylib::Vector3 new_position);
     raylib::Vector3 getPosition();
     void setScale(float _scale);
+    raylib::Model& getModel();
 
 protected:
     raylib::Model model;

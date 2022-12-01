@@ -1,15 +1,19 @@
 #include "GameObject.h"
 
-GameObject::GameObject(const char *model_path, const char *material_path)
+GameObject::GameObject()
 {
-    model = LoadModel(model_path);
-    model_texture = LoadTexture(material_path);
-    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = model_texture;
     model_pos = Vector3 {0, 0, 0};
     pitch = 0.0f;
     yaw = 0.0f;
     roll = 0.0f;
     scale = 1.0f;
+}
+
+GameObject::GameObject(const char *model_path, const char *material_path) : GameObject()
+{
+    model = LoadModel(model_path);
+    model_texture = LoadTexture(material_path);
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = model_texture;
 }
 
 void GameObject::render()
@@ -35,4 +39,9 @@ raylib::Vector3 GameObject::getPosition()
 void GameObject::setScale(float _scale)
 {
     scale = _scale;
+}
+
+raylib::Model &GameObject::getModel()
+{
+    return model;
 }

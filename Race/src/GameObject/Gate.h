@@ -7,14 +7,13 @@
 class Gate : public GameObject
 {
 public:
-    Gate(std::string model_path, std::string material_path, int _gateNum, std::shared_ptr<raylib::BoundingBox> _player_collider);
+    Gate(std::shared_ptr<raylib::Mesh> gate_mesh, int _gateNum, std::shared_ptr<raylib::BoundingBox> _player_collider);
     void setPosition(raylib::Vector3 new_position) override;
     void renderBoundingBox();
     bool isPlayerColliding();
     void passGate();
     bool isGatePassed();
     void resetLap();
-    void setMaterial(const char *material_path);
 
     raylib::BoundingBox bounding_box;
 

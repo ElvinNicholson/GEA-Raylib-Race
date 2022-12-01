@@ -23,14 +23,12 @@ public:
 protected:
 
 private:
-    void createGate(int gateNumber);
+    void createGate(int gate_number);
     void finishLap();
     void updateLapsText();
-
-    std::string model_path;
-    std::string inactive_mat_path;
-    std::string active_mat_path;
-    std::string next_active_mat_path;
+    void setGateActive(int gate_number);
+    void setGateInactive(int gate_number);
+    void setGateNextActive(int gate_number);
 
     bool runOnce;
     bool isRunning;
@@ -43,6 +41,12 @@ private:
     int currentGate;
     int lastGate;
     int nextGate;
+
+    std::shared_ptr<raylib::Mesh> gate_mesh;
+    raylib::Model gate_model;
+    raylib::Texture active_texture;
+    raylib::Texture next_active_texture;
+    raylib::Texture inactive_texture;
 
     float currentTime;
 

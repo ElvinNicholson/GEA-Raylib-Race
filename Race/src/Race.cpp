@@ -17,8 +17,8 @@ void Race::update(float dt)
     if (runOnce)
     {
         updateLapsText();
-        checkpoints.at(currentGate).setMaterial(active_mat_path.c_str());
-        checkpoints.at(nextGate).setMaterial(next_active_mat_path.c_str());
+        setGateActive(currentGate);
+        setGateNextActive(nextGate);
 
         runOnce = false;
     }
@@ -43,9 +43,9 @@ void Race::update(float dt)
             finishLap();
         }
 
-        checkpoints.at(lastGate).setMaterial(inactive_mat_path.c_str());
-        checkpoints.at(currentGate).setMaterial(active_mat_path.c_str());
-        checkpoints.at(nextGate).setMaterial(next_active_mat_path.c_str());
+        setGateInactive(lastGate);
+        setGateActive(currentGate);
+        setGateNextActive(nextGate);
     }
 
     currentTime += dt;
@@ -164,28 +164,48 @@ void Race::setCheckpoints(int number_of_checkpoints)
     }
 }
 
-void Race::createGate(int gateNumber)
+void Race::createGate(int gate_number)
 {
-    checkpoints.emplace_back(Gate(model_path, inactive_mat_path, gateNumber, player_collider));
-    checkpoints.back().setPosition({0, 0, gateNumber * 20.0f});
+    checkpoints.emplace_back(Gate(gate_mesh, gate_number, player_collider));
+    checkpoints.back().setPosition({0, 0, gate_number * 20.0f});
 }
 
 void Race::setModel(std::string _model_path)
 {
-    model_path = _model_path;
+    gate_model = LoadModel(_model_path.c_str());
+    gate_mesh = std::make_shared<raylib::Mesh>(gate_model.meshes[0]);
 }
 
 void Race::setInactiveMaterial(std::string _mat_path)
 {
-    inactive_mat_path = _mat_path;
+    inactive_texture = LoadTexture(_mat_path.c_str());
+    for (auto& gate : checkpoints)
+    {
+        gate.getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = inactive_texture;
+    }
 }
 
 void Race::setActiveMaterial(std::string _mat_path)
 {
-    active_mat_path = _mat_path;
+    active_texture = LoadTexture(_mat_path.c_str());
 }
 
 void Race::setNextActiveMaterial(std::string _mat_path)
 {
-    next_active_mat_path = _mat_path;
+    next_active_texture = LoadTexture(_mat_path.c_str());
+}
+
+void Race::setGateActive(int gate_number)
+{
+    checkpoints.at(gate_number).getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = active_texture;
+}
+
+void Race::setGateInactive(int gate_number)
+{
+    checkpoints.at(gate_number).getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = inactive_texture;
+}
+
+void Race::setGateNextActive(int gate_number)
+{
+    checkpoints.at(gate_number).getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = next_active_texture;
 }
