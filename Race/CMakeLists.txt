@@ -3,10 +3,11 @@ project(raylib_cpp_example)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
+include(FetchContent)
+
 # raylib
 find_package(raylib QUIET)
 if (NOT raylib_FOUND)
-    include(FetchContent)
     FetchContent_Declare(
         raylib
         GIT_REPOSITORY https://github.com/raysan5/raylib.git
@@ -18,7 +19,6 @@ endif()
 # raylib-cpp
 find_package(raylib_cpp QUIET)
 if (NOT raylib_cpp_FOUND)
-    include(FetchContent)
     FetchContent_Declare(
         raylib_cpp
         GIT_REPOSITORY https://github.com/RobLoach/raylib-cpp.git
@@ -27,11 +27,16 @@ if (NOT raylib_cpp_FOUND)
     FetchContent_MakeAvailable(raylib_cpp)
 endif()
 
+# json???
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
+FetchContent_MakeAvailable(json)
+
 # This is the main part:
 set(SOURCES main.cpp src/Game.cpp src/Game.h src/GameObject/GameObject.cpp src/GameObject/GameObject.h src/GameObject/Car.cpp src/GameObject/Car.h src/GameObject/Gate.cpp src/GameObject/Gate.h src/Race.cpp src/Race.h)
 add_executable(${PROJECT_NAME} ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
 target_link_libraries(${PROJECT_NAME} PUBLIC raylib raylib_cpp)
+target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
 
 # Web Configurations
 if (${PLATFORM} STREQUAL "Web")

@@ -4,6 +4,8 @@
 #include "GameObject/Gate.h"
 #include <memory>
 #include <iostream>
+#include <fstream>
+#include <nlohmann/json.hpp>
 
 class Race
 {
@@ -29,6 +31,7 @@ private:
     void setGateActive(int gate_number);
     void setGateInactive(int gate_number);
     void setGateNextActive(int gate_number);
+    void readLevel(std::string file_path);
 
     bool runOnce;
     bool isRunning;

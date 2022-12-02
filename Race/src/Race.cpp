@@ -19,6 +19,7 @@ void Race::update(float dt)
         updateLapsText();
         setGateActive(currentGate);
         setGateNextActive(nextGate);
+        readLevel("../Data/LevelData/Level1.json");
 
         runOnce = false;
     }
@@ -208,4 +209,19 @@ void Race::setGateInactive(int gate_number)
 void Race::setGateNextActive(int gate_number)
 {
     checkpoints.at(gate_number).getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = next_active_texture;
+}
+
+void Race::readLevel(std::string file_path)
+{
+    std::ifstream file(file_path);
+    nlohmann::json data;
+    file >> data;
+
+    nlohmann::json pos = data["position"];
+    for (auto it = pos.begin(); it != pos.end(); it++)
+    {
+        std::cout << it.value() << std::endl;
+    }
+
+
 }
