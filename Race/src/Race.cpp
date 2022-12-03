@@ -5,6 +5,8 @@ Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string le
     readLevel(level_data_path);
     resetRace();
     waypoint = LoadTexture("../Data/Texture/Waypoint.png");
+    waypoint_rotation = 0;
+    waypoint_scale = 0.3;
 }
 
 void Race::update(float dt)
@@ -75,7 +77,8 @@ void Race::render2D(Camera camera)
         return;
     }
 
-    DrawTextureEx(waypoint, getWaypointPos(camera), 0, 0.3, WHITE);
+    updateWaypointPos(camera);
+    DrawTextureEx(waypoint, waypoint_pos, waypoint_rotation, waypoint_scale, WHITE);
 }
 
 void Race::render3D()
@@ -194,11 +197,12 @@ void Race::setGateNextActive(int gate_number)
     checkpoints.at(gate_number).getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = next_active_texture;
 }
 
-raylib::Vector2 Race::getWaypointPos(Camera camera)
+void Race::updateWaypointPos(Camera camera)
 {
-    raylib::Vector2 new_pos = GetWorldToScreen(checkpoints.at(currentGate).getPosition(), camera);
-    new_pos.x = new_pos.x - 75;
-    new_pos.y = new_pos.y - 200;
+    waypoint_pos = GetWorldToScreen(checkpoints.at(currentGate).getPosition(), camera);
+    waypoint_pos.x = waypoint_pos.x - 75;
+    waypoint_pos.y = waypoint_pos.y - 200;
+    waypoint_rotation = 0;
 
     Vector3 forward = Vector3Normalize(Vector3Subtract(camera.target, camera.position));
     Vector3 object = Vector3Normalize(Vector3Subtract(camera.position, checkpoints.at(currentGate).getPosition()));
@@ -208,19 +212,22 @@ raylib::Vector2 Race::getWaypointPos(Camera camera)
 
     if (angle < 140)
     {
-        if (new_pos.x < GetScreenWidth() / 2)
+        float d = (checkpoints.at(currentGate).getPosition().x - camera.position.x) * (camera.target.z - camera.position.z) -
+                  (checkpoints.at(currentGate).getPosition().z - camera.position.z) * (camera.target.x - camera.position.x);
+
+        if (d > 0)
         {
-            new_pos.x = 0;
-            new_pos.y = GetScreenHeight() / 2 - waypoint.height * 0.3 * 0.5;
+            waypoint_pos.x = waypoint.height * waypoint_scale;
+            waypoint_pos.y = GetScreenHeight() / 2 - waypoint.width * waypoint_scale * 0.5;
+            waypoint_rotation = 90;
         }
         else
         {
-            new_pos.x = GetScreenWidth() - waypoint.width * 0.3;
-            new_pos.y = GetScreenHeight() / 2 - waypoint.height * 0.3 * 0.5;
+            waypoint_pos.x = GetScreenWidth() - waypoint.height * waypoint_scale;
+            waypoint_pos.y = GetScreenHeight() / 2 + waypoint.width * waypoint_scale * 0.5;
+            waypoint_rotation = -90;
         }
     }
-
-    return new_pos;
 }
 
 void Race::readLevel(std::string file_path)

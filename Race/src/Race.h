@@ -34,7 +34,7 @@ private:
     void setAllGateInactive();
     void setGateNextActive(int gate_number);
 
-    raylib::Vector2 getWaypointPos(Camera camera);
+    void updateWaypointPos(Camera camera);
 
     void readLevel(std::string file_path);
 
@@ -63,6 +63,9 @@ private:
     std::vector<Gate> checkpoints;
 
     raylib::Texture waypoint;
+    raylib::Vector2 waypoint_pos;
+    float waypoint_rotation;
+    float waypoint_scale;
 
 };
 

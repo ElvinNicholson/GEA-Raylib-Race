@@ -20,12 +20,11 @@ public:
     void resetLap();
     void rotate90();
 
-    raylib::BoundingBox bounding_box;
-
 protected:
 
 private:
     std::shared_ptr<raylib::BoundingBox> player_collider;
+    raylib::BoundingBox bounding_box;
 
     raylib::Model model;
     raylib::Texture2D model_texture;
@@ -33,7 +32,6 @@ private:
     float scale;
 
     bool passed;
-    float yaw;
 
 };
 

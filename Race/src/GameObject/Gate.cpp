@@ -5,7 +5,6 @@ player_collider(_player_collider)
 {
     model = LoadModelFromMesh(*gate_mesh);
     scale = 1.0f;
-    yaw = 0;
 }
 
 void Gate::render()
@@ -21,8 +20,14 @@ void Gate::renderBoundingBox()
 void Gate::setPosition(raylib::Vector3 new_position)
 {
     model_pos = new_position;
-    bounding_box = BoundingBox{{model_pos.x - 8, model_pos.y, model_pos.z - 2},
-                               {model_pos.x + 8, model_pos.y + 7, model_pos.z + 2}};
+
+    Vector3 size = Vector3Subtract(model.GetBoundingBox().max, model.GetBoundingBox().min);
+    float width = size.x/2;
+    float height = size.y;
+    float breadth = size.z/2;
+
+    bounding_box = BoundingBox{{model_pos.x - width, model_pos.y, model_pos.z},
+                               {model_pos.x + width, model_pos.y + height, model_pos.z + (breadth * 2)}};
 }
 
 raylib::Vector3 Gate::getPosition()
@@ -61,9 +66,13 @@ void Gate::resetLap()
 
 void Gate::rotate90()
 {
-    yaw = PI / 2;
-    model.transform = MatrixRotateXYZ((Vector3){0, yaw, 0});
+    model.transform = MatrixRotateXYZ((Vector3){0, PI / 2, 0});
 
-    bounding_box = BoundingBox{{model_pos.x - 2, model_pos.y, model_pos.z - 8},
-                               {model_pos.x + 2, model_pos.y + 7, model_pos.z + 8}};
+    Vector3 size = Vector3Subtract(model.GetBoundingBox().max, model.GetBoundingBox().min);
+    float width = size.x/2;
+    float height = size.y;
+    float breadth = size.z/2;
+
+    bounding_box = BoundingBox{{model_pos.x, model_pos.y, model_pos.z - width},
+                               {model_pos.x + (breadth * 2), model_pos.y + height, model_pos.z + width}};
 }
