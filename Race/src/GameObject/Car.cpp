@@ -9,7 +9,6 @@ Car::Car(std::shared_ptr<raylib::BoundingBox> _player_box) : GameObject("../Data
 
 void Car::updateCar(float dt)
 {
-
     if (IsKeyDown('W'))
     {
         move({cos(yaw * DEG2RAD) * speed * dt, 0, -sin(yaw * DEG2RAD) * speed * dt});

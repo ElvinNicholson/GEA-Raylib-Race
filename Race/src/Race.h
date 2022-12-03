@@ -10,30 +10,36 @@
 class Race
 {
 public:
-    Race(std::shared_ptr<raylib::BoundingBox> _player_collider);
+    Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string level_data_path);
     void update(float dt);
     void render2D(Camera camera);
     void render3D();
     void resetRace();
-    void setLaps(int number_of_laps);
-    void setCheckpoints(int number_of_checkpoints);
-    void setModel(std::string _model_path);
-    void setInactiveMaterial(std::string _mat_path);
-    void setActiveMaterial(std::string _mat_path);
-    void setNextActiveMaterial(std::string _mat_path);
 
 protected:
 
 private:
-    void createGate(int gate_number);
+    void setLaps(int number_of_laps);
+    void setModel(std::string _model_path);
+    void setInactiveMaterial(std::string _mat_path);
+    void setActiveMaterial(std::string _mat_path);
+    void setNextActiveMaterial(std::string _mat_path);
+    void createGate(raylib::Vector3 position, bool rotate);
+
     void finishLap();
     void updateLapsText();
+
     void setGateActive(int gate_number);
     void setGateInactive(int gate_number);
+    void setAllGateInactive();
     void setGateNextActive(int gate_number);
+
+    raylib::Vector2 getWaypointPos(Camera camera);
+
     void readLevel(std::string file_path);
 
     bool runOnce;
+    bool timerOn;
     bool isRunning;
     bool isWon;
 

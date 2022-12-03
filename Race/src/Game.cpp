@@ -5,13 +5,7 @@ Game::Game()
     player_collider = std::make_shared<raylib::BoundingBox>();
 
     car.reset(new Car(player_collider));
-    race.reset(new Race(player_collider));
-    race->setLaps(1);
-    race->setModel("../Data/Models/Gate.obj");
-    race->setCheckpoints(10);
-    race->setInactiveMaterial("../Data/Materials/Red.png");
-    race->setActiveMaterial("../Data/Materials/Green.png");
-    race->setNextActiveMaterial("../Data/Materials/Yellow.png");
+    race.reset(new Race(player_collider, "../Data/LevelData/Level1.json"));
 }
 
 bool Game::init()
