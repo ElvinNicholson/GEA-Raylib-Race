@@ -76,3 +76,10 @@ void Gate::rotate90()
     bounding_box = BoundingBox{{model_pos.x, model_pos.y, model_pos.z - width},
                                {model_pos.x + (breadth * 2), model_pos.y + height, model_pos.z + width}};
 }
+
+void Gate::unloadGate()
+{
+    // Has to set model to an empty mesh before deletion or else it breaks.
+    model = LoadModelFromMesh(Mesh());
+    model.Unload();
+}

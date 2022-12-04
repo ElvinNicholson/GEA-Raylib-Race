@@ -10,6 +10,7 @@
 
 #include "GameObject/GameObject.h"
 #include "GameObject/Car.h"
+#include "GameObject/Button.h"
 #include "Race.h"
 
 class Game
@@ -28,6 +29,10 @@ private:
     std::shared_ptr<raylib::BoundingBox> player_collider;
     std::unique_ptr<Car> car;
     std::unique_ptr<Race> race;
+
+    std::unique_ptr<Button> button_lvl1;
+    std::unique_ptr<Button> button_lvl2;
+    std::unique_ptr<Button> button_reset;
 };
 
 

@@ -1,0 +1,30 @@
+{
+  "raceName" : "level 2",
+  "numberOfLaps" : "3",
+  "modelFile" : "../Data/Models/overhead.obj",
+  "inactiveMaterialFile" : "../Data/Materials/Red.png",
+  "activeMaterialFile" : "../Data/Materials/Green.png",
+  "nextActiveMaterialFile" : "../Data/Materials/Yellow.png",
+  "checkpoints" : [
+    {
+      "position" : ["0", "0", "0"],
+      "facingAxis" : "z"
+    },
+    {
+      "position" : ["0", "0", "20"],
+      "facingAxis" : "z"
+    },
+    {
+      "position" : ["0", "0", "40"],
+      "facingAxis" : "z"
+    },
+    {
+      "position" : ["0", "0", "60"],
+      "facingAxis" : "z"
+    },
+    {
+      "position" : ["0", "0", "80"],
+      "facingAxis" : "z"
+    }
+  ]
+}

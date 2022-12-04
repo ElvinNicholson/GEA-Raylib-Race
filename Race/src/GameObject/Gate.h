@@ -19,6 +19,7 @@ public:
     bool isGatePassed();
     void resetLap();
     void rotate90();
+    void unloadGate();
 
 protected:
 

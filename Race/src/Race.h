@@ -11,6 +11,7 @@ class Race
 {
 public:
     Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string level_data_path);
+    ~Race();
     void update(float dt);
     void render2D(Camera camera);
     void render3D();
@@ -60,7 +61,7 @@ private:
     float currentTime;
 
     std::shared_ptr<raylib::BoundingBox> player_collider;
-    std::vector<Gate> checkpoints;
+    std::vector<std::unique_ptr<Gate>> checkpoints;
 
     raylib::Texture waypoint;
     raylib::Vector2 waypoint_pos;

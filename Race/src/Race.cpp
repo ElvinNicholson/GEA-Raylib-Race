@@ -9,6 +9,20 @@ Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string le
     waypoint_scale = 0.3;
 }
 
+Race::~Race()
+{
+    isRunning = false;
+    for (auto& gate : checkpoints)
+    {
+        gate->unloadGate();
+    }
+    checkpoints.clear();
+
+    // Has to set model to an empty mesh before deletion or else it breaks??????????????
+    gate_model = LoadModelFromMesh(Mesh());
+    gate_model.Unload();
+}
+
 void Race::update(float dt)
 {
     if (!isRunning)
@@ -28,13 +42,13 @@ void Race::update(float dt)
     }
 
 
-    if ((checkpoints.at(currentGate).isPlayerColliding() && currentGate == 0) ||
-        (checkpoints.at(currentGate).isPlayerColliding() && checkpoints.at(lastGate).isGatePassed()))
+    if ((checkpoints.at(currentGate)->isPlayerColliding() && currentGate == 0) ||
+        (checkpoints.at(currentGate)->isPlayerColliding() && checkpoints.at(lastGate)->isGatePassed()))
     {
         timerOn = true;
 
         std::cout << "Passed Gate " + std::to_string(currentGate) << std::endl;
-        checkpoints.at(currentGate).passGate();
+        checkpoints.at(currentGate)->passGate();
         currentGate++;
         lastGate = currentGate - 1;
         nextGate = currentGate + 1;
@@ -85,8 +99,8 @@ void Race::render3D()
 {
     for (auto& gate : checkpoints)
     {
-        gate.render();
-        gate.renderBoundingBox();
+        gate->render();
+        gate->renderBoundingBox();
     }
 }
 
@@ -123,7 +137,7 @@ void Race::finishLap()
 
     for (auto& gate : checkpoints)
     {
-        gate.resetLap();
+        gate->resetLap();
     }
 }
 
@@ -140,11 +154,11 @@ void Race::updateLapsText()
 
 void Race::createGate(raylib::Vector3 position, bool rotate)
 {
-    checkpoints.emplace_back(Gate(gate_mesh, player_collider));
-    checkpoints.back().setPosition(position);
+    checkpoints.emplace_back(new Gate(gate_mesh, player_collider));
+    checkpoints.back()->setPosition(position);
     if (rotate)
     {
-        checkpoints.back().rotate90();
+        checkpoints.back()->rotate90();
     }
 }
 
@@ -160,7 +174,7 @@ void Race::setInactiveMaterial(std::string _mat_path)
     inactive_texture = LoadTexture(_mat_path.c_str());
     for (auto& gate : checkpoints)
     {
-        gate.getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = inactive_texture;
+        gate->getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = inactive_texture;
     }
 }
 
@@ -176,12 +190,12 @@ void Race::setNextActiveMaterial(std::string _mat_path)
 
 void Race::setGateActive(int gate_number)
 {
-    checkpoints.at(gate_number).getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = active_texture;
+    checkpoints.at(gate_number)->getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = active_texture;
 }
 
 void Race::setGateInactive(int gate_number)
 {
-    checkpoints.at(gate_number).getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = inactive_texture;
+    checkpoints.at(gate_number)->getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = inactive_texture;
 }
 
 void Race::setAllGateInactive()
@@ -194,26 +208,26 @@ void Race::setAllGateInactive()
 
 void Race::setGateNextActive(int gate_number)
 {
-    checkpoints.at(gate_number).getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = next_active_texture;
+    checkpoints.at(gate_number)->getModel().materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = next_active_texture;
 }
 
 void Race::updateWaypointPos(Camera camera)
 {
-    waypoint_pos = GetWorldToScreen(checkpoints.at(currentGate).getPosition(), camera);
+    waypoint_pos = GetWorldToScreen(checkpoints.at(currentGate)->getPosition(), camera);
     waypoint_pos.x = waypoint_pos.x - 75;
     waypoint_pos.y = waypoint_pos.y - 200;
     waypoint_rotation = 0;
 
     Vector3 forward = Vector3Normalize(Vector3Subtract(camera.target, camera.position));
-    Vector3 object = Vector3Normalize(Vector3Subtract(camera.position, checkpoints.at(currentGate).getPosition()));
+    Vector3 object = Vector3Normalize(Vector3Subtract(camera.position, checkpoints.at(currentGate)->getPosition()));
     forward.y = 0;
     object.y = 0;
     float angle = Vector3Angle(forward, object) * RAD2DEG;
 
     if (angle < 140)
     {
-        float d = (checkpoints.at(currentGate).getPosition().x - camera.position.x) * (camera.target.z - camera.position.z) -
-                  (checkpoints.at(currentGate).getPosition().z - camera.position.z) * (camera.target.x - camera.position.x);
+        float d = (checkpoints.at(currentGate)->getPosition().x - camera.position.x) * (camera.target.z - camera.position.z) -
+                  (checkpoints.at(currentGate)->getPosition().z - camera.position.z) * (camera.target.x - camera.position.x);
 
         if (d > 0)
         {
