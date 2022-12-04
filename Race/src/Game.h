@@ -3,15 +3,14 @@
 
 #include <memory>
 #include <iostream>
+#include "cmath"
 
 #include "raylib-cpp.hpp"
 #include "raylib.h"
-#include "cmath"
 
-#include "GameObject/GameObject.h"
 #include "GameObject/Car.h"
 #include "GameObject/Button.h"
-#include "Race.h"
+#include "RaceCreator/Race.h"
 
 class Game
 {

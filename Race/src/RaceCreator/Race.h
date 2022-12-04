@@ -1,11 +1,13 @@
 #ifndef RAYLIB_CPP_EXAMPLE_RACE_H
 #define RAYLIB_CPP_EXAMPLE_RACE_H
 
-#include "GameObject/Gate.h"
 #include <memory>
 #include <iostream>
 #include <fstream>
+
 #include <nlohmann/json.hpp>
+
+#include "Gate.h"
 
 class Race
 {

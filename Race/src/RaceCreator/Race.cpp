@@ -11,12 +11,10 @@ Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string le
 
 Race::~Race()
 {
-    isRunning = false;
     for (auto& gate : checkpoints)
     {
         gate->unloadGate();
     }
-    checkpoints.clear();
 
     // Has to set model to an empty mesh before deletion or else it breaks??????????????
     gate_model = LoadModelFromMesh(Mesh());

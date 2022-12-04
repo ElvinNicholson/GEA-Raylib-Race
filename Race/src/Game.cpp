@@ -33,13 +33,12 @@ void Game::update()
     float dt = GetFrameTime();
 
     car->updateCar(dt);
+    camera.position = car->getCamPos();
+    camera.target = car->getCarPos();
+    camera.target.y = 4;
 
     // Call race update function
     race->update(dt);
-
-    camera.position = car->getCamPos();
-    camera.target = car->getPosition();
-    camera.target.y = 4;
 
     if (button_lvl1->isClicked(GetMousePosition()))
     {
@@ -61,8 +60,10 @@ void Game::render()
 {
  BeginMode3D(camera);
     car->render();
+
     // Render race 3D components
     race->render3D();
+
     DrawGrid(100, 10.f);
  EndMode3D();
 

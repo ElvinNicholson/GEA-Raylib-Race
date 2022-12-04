@@ -1,9 +1,13 @@
 #include "Car.h"
 #include <iostream>
 
-Car::Car(std::shared_ptr<raylib::BoundingBox> _player_box) : GameObject("../Data/Models/Car3.obj", "../Data/Materials/car Texture.png"), player_box(_player_box)
+Car::Car(std::shared_ptr<raylib::BoundingBox> _player_box) : player_box(_player_box)
 {
-    setPosition({0, 2.5, -20});
+    model = LoadModel("../Data/Models/Car3.obj");
+    model_texture = LoadTexture("../Data/Materials/car Texture.png");
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = model_texture;
+
+    model_pos = Vector3{0, 2.5, -20};
     speed = 40;
 }
 
@@ -30,7 +34,7 @@ void Car::updateCar(float dt)
             yaw += 1.5;
             yaw_cam += 1.4;
         }
-        model.transform = MatrixRotateXYZ((Vector3){ DEG2RAD * pitch, DEG2RAD * yaw, DEG2RAD * roll});
+        model.transform = MatrixRotateXYZ((Vector3){0, DEG2RAD * yaw,0});
     }
     else if (IsKeyDown('D'))
     {
@@ -45,7 +49,7 @@ void Car::updateCar(float dt)
             yaw_cam -= 1.4;
         }
 
-        model.transform = MatrixRotateXYZ((Vector3){ DEG2RAD * pitch, DEG2RAD * yaw, DEG2RAD * roll});
+        model.transform = MatrixRotateXYZ((Vector3){0, DEG2RAD * yaw, 0});
     }
     else
     {
@@ -55,6 +59,11 @@ void Car::updateCar(float dt)
     }
 
     updateBox();
+}
+
+void Car::render()
+{
+    DrawModel(model, model_pos, 1, WHITE);
 }
 
 raylib::Vector3 Car::getCamPos()
@@ -69,4 +78,14 @@ void Car::updateBox()
                           {model_pos.x + 2,model_pos.y + 2,model_pos.z + 2}};
 
     *player_box = new_box;
+}
+
+void Car::move(raylib::Vector3 movement)
+{
+    model_pos = Vector3Add(model_pos, movement);
+}
+
+raylib::Vector3 Car::getCarPos()
+{
+    return model_pos;
 }

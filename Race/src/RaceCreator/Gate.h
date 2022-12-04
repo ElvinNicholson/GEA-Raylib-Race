@@ -1,9 +1,10 @@
 #ifndef RAYLIB_CPP_EXAMPLE_GATE_H
 #define RAYLIB_CPP_EXAMPLE_GATE_H
 
+#include <memory>
+
 #include "raylib-cpp.hpp"
 #include "raylib.h"
-#include <memory>
 
 class Gate
 {

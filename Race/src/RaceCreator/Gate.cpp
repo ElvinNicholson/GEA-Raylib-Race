@@ -80,6 +80,7 @@ void Gate::rotate90()
 void Gate::unloadGate()
 {
     // Has to set model to an empty mesh before deletion or else it breaks.
+    // Also doest not work when called from deconstructor
     model = LoadModelFromMesh(Mesh());
     model.Unload();
 }
