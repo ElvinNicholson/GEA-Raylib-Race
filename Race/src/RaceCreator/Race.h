@@ -5,6 +5,12 @@
 #include <iostream>
 #include <fstream>
 
+#if defined(PLATFORM_DESKTOP)
+#define GLSL_VERSION            330
+#else   // PLATFORM_RPI, PLATFORM_ANDROID, PLATFORM_WEB
+#define GLSL_VERSION            100
+#endif
+
 #include <nlohmann/json.hpp>
 
 #include "Gate.h"
@@ -41,6 +47,8 @@ private:
 
     void readLevel(std::string file_path);
 
+    void updateMinimap();
+
     bool runOnce;
     bool timerOn;
     bool isRunning;
@@ -69,6 +77,16 @@ private:
     raylib::Vector2 waypoint_pos;
     float waypoint_rotation;
     float waypoint_scale;
+
+    Shader billboard_shader;
+    raylib::RenderTexture2D minimap;
+    raylib::Camera3D minimap_cam;
+    raylib::Texture minimap_player;
+    raylib::Texture minimap_checkpoint;
+    raylib::Rectangle minimap_player_rect;
+    raylib::Rectangle minimap_checkpoint_rect;
+    raylib::Vector3 bill_up;
+    float player_rotation;
 
 };
 
