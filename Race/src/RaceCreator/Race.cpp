@@ -3,6 +3,10 @@
 Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string level_data_path) : player_collider(_player_collider)
 {
     readLevel(level_data_path);
+
+    gate_model = LoadModelFromMesh(Mesh());
+    gate_model.Unload();
+
     resetRace();
     waypoint = LoadTexture("../Data/Texture/Waypoint.png");
     waypoint_rotation = 0;
@@ -15,10 +19,6 @@ Race::~Race()
     {
         gate->unloadGate();
     }
-
-    // Has to set model to an empty mesh before deletion or else it breaks??????????????
-    gate_model = LoadModelFromMesh(Mesh());
-    gate_model.Unload();
 }
 
 void Race::update(float dt)
