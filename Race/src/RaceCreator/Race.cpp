@@ -12,23 +12,7 @@ Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string le
     waypoint_rotation = 0;
     waypoint_scale = 0.3;
 
-    billboard_shader = LoadShader(NULL, "../Data/Shaders/billboard.fs");
-
-    minimap = LoadRenderTexture(300, 300);
-
-    minimap_player = LoadTexture("../Data/Texture/minimap_player.png");
-    minimap_player_rect = Rectangle{0, 0, (float)minimap_player.width, (float)minimap_player.height};
-
-    minimap_checkpoint = LoadTexture("../Data/Texture/minimap_checkpoint.png");
-    minimap_checkpoint_rect = Rectangle{0, 0, (float)minimap_checkpoint.width, (float)minimap_checkpoint.height};
-
-    bill_up = Vector3{ 1.0f, 0.0f, 0.0f };
-
-    minimap_cam = { 0 };
-    minimap_cam.up = Vector3{ 1.0f, 0.0f, 0.0f };
-    minimap_cam.fovy = 90.0f;
-    minimap_cam.projection = CAMERA_ORTHOGRAPHIC;
-    SetCameraMode(minimap_cam, CAMERA_ORTHOGRAPHIC);
+    minimap.reset(new Minimap());
 }
 
 Race::~Race()
@@ -41,7 +25,7 @@ Race::~Race()
 
 void Race::update(float dt)
 {
-    updateMinimap();
+    minimap->updateMinimap(player_collider->min, checkpoints.at(currentGate)->getPosition(), player_rotation, isRunning);
 
     if (!isRunning)
     {
@@ -105,7 +89,7 @@ void Race::render2D(Camera camera)
     DrawText(lapsText.c_str(), 60, 900, 80, BLACK);
 
     updateWaypointPos(camera);
-    DrawTextureRec(minimap.texture, Rectangle{0, 0, (float)minimap.texture.width, (float)-minimap.texture.height}, {(float)GetScreenWidth() - 350, (float)GetScreenHeight() - 350}, WHITE);
+    minimap->renderMinimap();
 
     if (!isRunning)
     {
@@ -122,32 +106,6 @@ void Race::render3D()
         gate->render();
         gate->renderBoundingBox();
     }
-}
-
-void Race::updateMinimap()
-{
-    minimap_cam.target = player_collider->min;
-    minimap_cam.position = minimap_cam.target;
-    minimap_cam.position.y = 20;
-
-    Vector3 cp_pos = checkpoints.at(currentGate)->getPosition();
-    cp_pos.y = 0;
-
-    cp_pos = Vector3Clamp(cp_pos, Vector3{player_collider->min.x - 35, 0, player_collider->min.z - 38},
-                                  Vector3{player_collider->min.x + 35, 0, player_collider->min.z + 38});
-
-    BeginTextureMode(minimap);
-        BeginMode3D(minimap_cam);
-            ClearBackground(GRAY);
-            BeginShaderMode(billboard_shader);
-                DrawBillboardPro(minimap_cam, minimap_player, minimap_player_rect, player_collider->min, bill_up, {20, 20}, {0}, player_rotation, WHITE);
-                if (isRunning)
-                {
-                    DrawBillboardPro(minimap_cam, minimap_checkpoint, minimap_checkpoint_rect, cp_pos, bill_up, {20, 20}, {0}, 0, WHITE);
-                }
-            EndShaderMode();
-        EndMode3D();
-    EndTextureMode();
 }
 
 void Race::resetRace()
