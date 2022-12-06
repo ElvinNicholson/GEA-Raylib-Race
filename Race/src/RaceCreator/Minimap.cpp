@@ -2,7 +2,7 @@
 
 Minimap::Minimap()
 {
-    billboard_shader = LoadShader(NULL, "../Data/Shaders/billboard.fs");
+    alpha_discard = LoadShader(NULL, "../Data/Shaders/billboard.fs");
 
     minimap = LoadRenderTexture(300, 300);
 
@@ -30,13 +30,14 @@ void Minimap::updateMinimap(raylib::Vector3 player_pos, raylib::Vector3 checkpoi
     Vector3 cp_pos = checkpoint_pos;
     cp_pos.y = 0;
 
-    cp_pos = Vector3Clamp(cp_pos, Vector3{player_pos.x - 35, 0, player_pos.z - 38},
-                          Vector3{player_pos.x + 35, 0, player_pos.z + 38});
+    cp_pos = Vector3Clamp(cp_pos, Vector3{player_pos.x - 35, 0, player_pos.z - 35},
+                          Vector3{player_pos.x + 35, 0, player_pos.z + 35});
 
     BeginTextureMode(minimap);
         BeginMode3D(minimap_cam);
-        ClearBackground(GRAY);
-            BeginShaderMode(billboard_shader);
+            ClearBackground(GRAY);
+            DrawGrid(100, 10.f);
+            BeginShaderMode(alpha_discard);
                 DrawBillboardPro(minimap_cam, minimap_player, minimap_player_rect, player_pos, bill_up, {20, 20}, {0}, player_rotation, WHITE);
                 if (is_running)
                 {

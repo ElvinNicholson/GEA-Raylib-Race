@@ -9,6 +9,7 @@ Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string le
 
     resetRace();
     waypoint = LoadTexture("../Data/Texture/Waypoint.png");
+    waypoint_flag = LoadTexture("../Data/Texture/flag.png");
     waypoint_rotation = 0;
     waypoint_scale = 0.3;
 
@@ -97,6 +98,7 @@ void Race::render2D(Camera camera)
     }
 
     DrawTextureEx(waypoint, waypoint_pos, waypoint_rotation, waypoint_scale, WHITE);
+    DrawTextureEx(waypoint_flag, waypoint_flag_pos, 0, waypoint_scale, WHITE);
 }
 
 void Race::render3D()
@@ -222,6 +224,8 @@ void Race::updateWaypointPos(Camera camera)
     waypoint_pos.y = waypoint_pos.y - 200;
     waypoint_rotation = 0;
 
+    waypoint_flag_pos = Vector2{waypoint_pos.x + 40, waypoint_pos.y + 25};
+
     Vector3 forward = Vector3Normalize(Vector3Subtract(camera.target, camera.position));
     Vector3 object = Vector3Normalize(Vector3Subtract(camera.position, checkpoints.at(currentGate)->getPosition()));
     forward.y = 0;
@@ -238,12 +242,16 @@ void Race::updateWaypointPos(Camera camera)
             waypoint_pos.x = waypoint.height * waypoint_scale;
             waypoint_pos.y = GetScreenHeight() / 2 - waypoint.width * waypoint_scale * 0.5;
             waypoint_rotation = 90;
+
+            waypoint_flag_pos = Vector2{waypoint_pos.x - 100, waypoint_pos.y + 35};
         }
         else
         {
             waypoint_pos.x = GetScreenWidth() - waypoint.height * waypoint_scale;
             waypoint_pos.y = GetScreenHeight() / 2 + waypoint.width * waypoint_scale * 0.5;
             waypoint_rotation = -90;
+
+            waypoint_flag_pos = Vector2{waypoint_pos.x + 25, waypoint_pos.y - 120};
         }
     }
 

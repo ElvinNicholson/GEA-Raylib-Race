@@ -20,7 +20,7 @@ public:
 protected:
 
 private:
-    Shader billboard_shader;
+    Shader alpha_discard;
     raylib::RenderTexture2D minimap;
     raylib::Camera3D minimap_cam;
     raylib::Texture minimap_player;

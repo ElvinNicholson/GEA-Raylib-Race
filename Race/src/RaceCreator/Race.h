@@ -67,7 +67,9 @@ private:
     std::vector<std::unique_ptr<Gate>> checkpoints;
 
     raylib::Texture waypoint;
+    raylib::Texture waypoint_flag;
     raylib::Vector2 waypoint_pos;
+    raylib::Vector2 waypoint_flag_pos;
     float waypoint_rotation;
     float waypoint_scale;
 
