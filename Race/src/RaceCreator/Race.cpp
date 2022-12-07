@@ -237,7 +237,7 @@ void Race::updateWaypointPos(Camera camera)
         float d = (checkpoints.at(currentGate)->getPosition().x - camera.position.x) * (camera.target.z - camera.position.z) -
                   (checkpoints.at(currentGate)->getPosition().z - camera.position.z) * (camera.target.x - camera.position.x);
 
-        if (d > 0)
+        if (d >= 0)
         {
             waypoint_pos.x = waypoint.height * waypoint_scale;
             waypoint_pos.y = GetScreenHeight() / 2 - waypoint.width * waypoint_scale * 0.5;
