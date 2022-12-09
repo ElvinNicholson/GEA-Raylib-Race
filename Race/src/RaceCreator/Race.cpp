@@ -13,6 +13,8 @@ Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string le
     waypoint_rotation = 0;
     waypoint_scale = 0.3;
 
+    ai_racers.emplace_back(new RacerAI());
+
     minimap.reset(new Minimap());
 }
 
@@ -82,6 +84,22 @@ void Race::update(float dt)
     {
         currentTime += dt;
     }
+
+    for (auto& racer : ai_racers)
+    {
+        racer->update(dt, checkpoints.at(racer->getCurrentGate())->getPosition());
+
+        if (checkpoints.at(racer->getCurrentGate())->isColliding(racer->getBoundingBox()))
+        {
+            racer->setCurrentGate(racer->getCurrentGate() + 1);
+            if (racer->getCurrentGate() == checkpoints.size())
+            {
+                racer->setCurrentGate(0);
+            }
+
+            std::cout << racer->getCurrentGate() << std::endl;
+        }
+    }
 }
 
 void Race::render2D(Camera camera)
@@ -107,6 +125,11 @@ void Race::render3D()
     {
         gate->render();
         gate->renderBoundingBox();
+    }
+
+    for (auto& racers : ai_racers)
+    {
+        racers->render();
     }
 }
 

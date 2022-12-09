@@ -16,6 +16,7 @@ public:
     raylib::Vector3 getPosition();
     raylib::Model& getModel();
     bool isPlayerColliding();
+    bool isColliding(std::shared_ptr<BoundingBox> box);
     void passGate();
     bool isGatePassed();
     void resetLap();

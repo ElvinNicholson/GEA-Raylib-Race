@@ -11,19 +11,19 @@
       "facingAxis" : "z"
     },
     {
-      "position" : ["0", "0", "20"],
+      "position" : ["0", "0", "50"],
       "facingAxis" : "z"
     },
     {
-      "position" : ["40", "0", "40"],
+      "position" : ["50", "0", "90"],
       "facingAxis" : "x"
     },
     {
-      "position" : ["60", "0", "20"],
+      "position" : ["110", "0", "70"],
       "facingAxis" : "z"
     },
     {
-      "position" : ["30", "0", "00"],
+      "position" : ["80", "0", "-50"],
       "facingAxis" : "x"
     }
   ]

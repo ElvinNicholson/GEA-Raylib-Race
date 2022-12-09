@@ -9,6 +9,7 @@
 
 #include "Gate.h"
 #include "Minimap.h"
+#include "RacerAI.h"
 
 class Race
 {
@@ -75,6 +76,8 @@ private:
 
     std::unique_ptr<Minimap> minimap;
     float player_rotation;
+
+    std::vector<std::unique_ptr<RacerAI>> ai_racers;
 
 };
 

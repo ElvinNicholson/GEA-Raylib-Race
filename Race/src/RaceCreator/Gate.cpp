@@ -49,6 +49,15 @@ bool Gate::isPlayerColliding()
     return false;
 }
 
+bool Gate::isColliding(std::shared_ptr<BoundingBox> box)
+{
+    if (CheckCollisionBoxes(*box, bounding_box))
+    {
+        return true;
+    }
+    return false;
+}
+
 void Gate::passGate()
 {
     passed = true;
