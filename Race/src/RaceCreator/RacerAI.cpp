@@ -1,6 +1,6 @@
 #include "RacerAI.h"
 
-RacerAI::RacerAI()
+RacerAI::RacerAI(raylib::Vector3 spawn_pos, float spawn_direction)
 {
     bounding_box = std::make_shared<raylib::BoundingBox>();
 
@@ -8,10 +8,11 @@ RacerAI::RacerAI()
     model_texture = LoadTexture("../Data/Materials/car Texture.png");
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = model_texture;
 
-    model_pos = Vector3{0, 2.5, -20};
+    model_pos = spawn_pos;
+    updateBox();
 
     speed = 40;
-    yaw = -90;
+    yaw = spawn_direction;
 
     currentGate = 0;
 }
@@ -37,11 +38,12 @@ void RacerAI::update(float dt, raylib::Vector3 target)
     float d = (target.x - model_pos.x) * (looking_at.z - model_pos.z) -
               (target.z - model_pos.z) * (looking_at.x - model_pos.x);
 
-    if (d > 0)
+    // Decide to turn left or right
+    if (d > 0 && angle > min_angle)
     {
         yaw += 1.5;
     }
-    else if (d < 0)
+    else if (d < 0 && angle > min_angle)
     {
         yaw -= 1.5;
     }
@@ -50,15 +52,17 @@ void RacerAI::update(float dt, raylib::Vector3 target)
     looking_at = Vector3{model_pos.x + cos(yaw * DEG2RAD) * 20, 2.5, model_pos.z - sin(yaw * DEG2RAD) * 20};
 
     Vector3 cur_pos_to_target = Vector3Subtract(target, model_pos);
-    float cur_magnitude = sqrt(pow(cur_pos_to_target.x, 2) + pow(cur_pos_to_target.z, 2));
+    float displacement = sqrt(pow(cur_pos_to_target.x, 2) + pow(cur_pos_to_target.z, 2));
 
-    if (angle < 45 || cur_magnitude > 20)
+    // If car is facing in the general direction of the gate move forward
+    if (angle < 45 || displacement > 20)
     {
         move({cos(yaw * DEG2RAD) * speed * dt, 0, -sin(yaw * DEG2RAD) * speed * dt});
         return;
     }
 
-    if (angle > min_angle && cur_magnitude > 10)
+    // If car is near gate but not looking at it stop moving and turn towards gate
+    if (angle > min_angle && displacement > 10)
     {
         return;
     }
@@ -68,20 +72,18 @@ void RacerAI::update(float dt, raylib::Vector3 target)
 //    float new_magnitude = pow(new_pos_to_target.x, 2) + pow(new_pos_to_target.z, 2);
 //
 //
-//    if (new_magnitude < cur_magnitude)
+//    if (new_magnitude < displacement)
 //    {
 //        move({cos(yaw * DEG2RAD) * speed * dt, 0, -sin(yaw * DEG2RAD) * speed * dt});
 //    }
 
     move({cos(yaw * DEG2RAD) * speed * dt, 0, -sin(yaw * DEG2RAD) * speed * dt});
-
-    updateBox();
 }
 
 void RacerAI::render()
 {
     DrawModel(model, model_pos, 1, GREEN);
-    DrawLine3D(model_pos, looking_at, GREEN);
+    //DrawLine3D(model_pos, looking_at, GREEN);
 }
 
 std::shared_ptr<raylib::BoundingBox> RacerAI::getBoundingBox()
@@ -101,6 +103,7 @@ void RacerAI::updateBox()
 void RacerAI::move(raylib::Vector3 movement)
 {
     model_pos = Vector3Add(model_pos, movement);
+    updateBox();
 }
 
 void RacerAI::setCurrentGate(int gate)

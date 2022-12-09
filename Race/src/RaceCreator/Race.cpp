@@ -13,7 +13,8 @@ Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string le
     waypoint_rotation = 0;
     waypoint_scale = 0.3;
 
-    ai_racers.emplace_back(new RacerAI());
+    ai_racers.emplace_back(new RacerAI(Vector3{0, 2.5, -20}, -90));
+    ai_racers.emplace_back(new RacerAI(Vector3{0, 2.5, -100}, -90));
 
     minimap.reset(new Minimap());
 }
@@ -96,8 +97,6 @@ void Race::update(float dt)
             {
                 racer->setCurrentGate(0);
             }
-
-            std::cout << racer->getCurrentGate() << std::endl;
         }
     }
 }

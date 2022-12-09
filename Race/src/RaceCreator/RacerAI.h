@@ -9,7 +9,7 @@
 class RacerAI
 {
 public:
-    RacerAI();
+    RacerAI(raylib::Vector3 spawn_pos, float spawn_direction);
     void update(float dt, raylib::Vector3 target);
     void render();
     std::shared_ptr<raylib::BoundingBox> getBoundingBox();
