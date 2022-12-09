@@ -1,7 +1,6 @@
 #include "Gate.h"
 
-Gate::Gate(std::shared_ptr<raylib::Mesh> gate_mesh, std::shared_ptr<raylib::BoundingBox> _player_collider) :
-player_collider(_player_collider)
+Gate::Gate(std::shared_ptr<raylib::Mesh> gate_mesh)
 {
     model = LoadModelFromMesh(*gate_mesh);
     scale = 1.0f;
@@ -38,15 +37,6 @@ raylib::Vector3 Gate::getPosition()
 raylib::Model& Gate::getModel()
 {
     return model;
-}
-
-bool Gate::isPlayerColliding()
-{
-    if (CheckCollisionBoxes(*player_collider, bounding_box))
-    {
-        return true;
-    }
-    return false;
 }
 
 bool Gate::isColliding(std::shared_ptr<BoundingBox> box)

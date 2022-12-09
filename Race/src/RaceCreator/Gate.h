@@ -9,13 +9,12 @@
 class Gate
 {
 public:
-    Gate(std::shared_ptr<raylib::Mesh> gate_mesh, std::shared_ptr<raylib::BoundingBox> _player_collider);
+    Gate(std::shared_ptr<raylib::Mesh> gate_mesh);
     void render();
     void renderBoundingBox();
     void setPosition(raylib::Vector3 new_position);
     raylib::Vector3 getPosition();
     raylib::Model& getModel();
-    bool isPlayerColliding();
     bool isColliding(std::shared_ptr<BoundingBox> box);
     void passGate();
     bool isGatePassed();
@@ -26,7 +25,6 @@ public:
 protected:
 
 private:
-    std::shared_ptr<raylib::BoundingBox> player_collider;
     raylib::BoundingBox bounding_box;
 
     raylib::Model model;

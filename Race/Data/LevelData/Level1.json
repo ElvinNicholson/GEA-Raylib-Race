@@ -26,5 +26,31 @@
       "position" : ["80", "0", "-50"],
       "facingAxis" : "x"
     }
+  ],
+  "racingBots" : [
+    {
+      "spawnPosition" : ["0", "2.5", "-20"],
+      "spawnDirection" : "-90",
+      "colorRGBA" : ["230", "41", "55", "255"],
+      "minAngle" : "40"
+    },
+    {
+      "spawnPosition" : ["0", "2.5", "-20"],
+      "spawnDirection" : "-90",
+      "colorRGBA" : ["0", "228", "48", "255"],
+      "minAngle" : "10"
+    },
+    {
+      "spawnPosition" : ["0", "2.5", "-20"],
+      "spawnDirection" : "-90",
+      "colorRGBA" : ["253", "249", "0", "255"],
+      "minAngle" : "20"
+    },
+    {
+      "spawnPosition" : ["0", "2.5", "-20"],
+      "spawnDirection" : "-90",
+      "colorRGBA" : ["0", "121", "241", "255"],
+      "minAngle" : "30"
+    }
   ]
 }

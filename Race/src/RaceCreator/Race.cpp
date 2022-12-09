@@ -13,9 +13,6 @@ Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string le
     waypoint_rotation = 0;
     waypoint_scale = 0.3;
 
-    ai_racers.emplace_back(new RacerAI(Vector3{0, 2.5, -20}, -90));
-    ai_racers.emplace_back(new RacerAI(Vector3{0, 2.5, -100}, -90));
-
     minimap.reset(new Minimap());
 }
 
@@ -48,8 +45,8 @@ void Race::update(float dt)
     }
 
 
-    if ((checkpoints.at(currentGate)->isPlayerColliding() && currentGate == 0) ||
-        (checkpoints.at(currentGate)->isPlayerColliding() && checkpoints.at(lastGate)->isGatePassed()))
+    if ((checkpoints.at(currentGate)->isColliding(player_collider) && currentGate == 0) ||
+        (checkpoints.at(currentGate)->isColliding(player_collider) && checkpoints.at(lastGate)->isGatePassed()))
     {
         timerOn = true;
 
@@ -92,11 +89,7 @@ void Race::update(float dt)
 
         if (checkpoints.at(racer->getCurrentGate())->isColliding(racer->getBoundingBox()))
         {
-            racer->setCurrentGate(racer->getCurrentGate() + 1);
-            if (racer->getCurrentGate() == checkpoints.size())
-            {
-                racer->setCurrentGate(0);
-            }
+            racer->passGate(checkpoints.size(), lapsTotal);
         }
     }
 }
@@ -182,7 +175,7 @@ void Race::updateLapsText()
 
 void Race::createGate(raylib::Vector3 position, bool rotate)
 {
-    checkpoints.emplace_back(new Gate(gate_mesh, player_collider));
+    checkpoints.emplace_back(new Gate(gate_mesh));
     checkpoints.back()->setPosition(position);
     if (rotate)
     {
@@ -313,6 +306,33 @@ void Race::readLevel(std::string file_path)
         {
             createGate(position, false);
         }
+    }
+
+    for (auto& botData : levelData["racingBots"])
+    {
+        std::vector<float> temp_vec;
+        temp_vec.reserve(4);
+        for (auto& pos : botData["spawnPosition"])
+        {
+            std::string val = pos;
+            temp_vec.emplace_back(std::stoi(val));
+        }
+
+        raylib::Vector3 spawn_pos = Vector3{temp_vec.at(0), temp_vec.at(1), temp_vec.at(2)};
+        temp_vec.clear();
+
+        for (auto& pos : botData["colorRGBA"])
+        {
+            std::string val = pos;
+            temp_vec.emplace_back(std::stoi(val));
+        }
+
+        raylib::Vector4 rgba = Vector4{temp_vec.at(0), temp_vec.at(1), temp_vec.at(2), temp_vec.at(3)};
+
+        float spawn_dir = std::stof(botData.value("spawnDirection", "0"));
+        float min_angle = std::stof(botData.value("minAngle", "20"));
+
+        ai_racers.emplace_back(new RacerAI(spawn_pos, spawn_dir, rgba, min_angle));
     }
 
     file.close();
