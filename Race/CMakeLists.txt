@@ -32,7 +32,7 @@ FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download
 FetchContent_MakeAvailable(json)
 
 # This is the main part:
-set(SOURCES main.cpp src/Game.cpp src/Game.h src/GameObject/Car.cpp src/GameObject/Car.h src/RaceCreator/Gate.cpp src/RaceCreator/Gate.h src/RaceCreator/Race.cpp src/RaceCreator/Race.h src/GameObject/Button.cpp src/GameObject/Button.h src/RaceCreator/Minimap.cpp src/RaceCreator/Minimap.h src/RaceCreator/RacerAI.cpp src/RaceCreator/RacerAI.h)
+set(SOURCES main.cpp src/Game.cpp src/Game.h src/GameObject/Car.cpp src/GameObject/Car.h src/RaceCreator/Gate.cpp src/RaceCreator/Gate.h src/RaceCreator/Race.cpp src/RaceCreator/Race.h src/GameObject/Button.cpp src/GameObject/Button.h src/RaceCreator/Minimap.cpp src/RaceCreator/Minimap.h src/RaceCreator/RacerAI.cpp src/RaceCreator/RacerAI.h src/RaceCreator/PlacementContainer.h src/RaceCreator/PlacementContainer.cpp)
 add_executable(${PROJECT_NAME} ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
 target_link_libraries(${PROJECT_NAME} PUBLIC raylib raylib_cpp)

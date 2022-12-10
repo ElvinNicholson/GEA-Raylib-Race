@@ -10,6 +10,7 @@
 #include "Gate.h"
 #include "Minimap.h"
 #include "RacerAI.h"
+#include "PlacementContainer.h"
 
 class Race
 {
@@ -31,6 +32,7 @@ private:
     void setNextActiveMaterial(std::string _mat_path);
     void createGate(raylib::Vector3 position, bool rotate);
 
+    void gateHandler();
     void finishLap();
     void updateLapsText();
 
@@ -42,6 +44,12 @@ private:
     void updateWaypointPos(Camera camera);
 
     void readLevel(std::string file_path);
+
+    void createPlacementTable();
+    void updatePlayerProgress();
+    void sortPlacementTable();
+    std::vector<PlacementContainer> quickSort(std::vector<PlacementContainer> vector);
+    std::vector<PlacementContainer> loopRecursiveSort(std::vector<PlacementContainer> higher, std::vector<PlacementContainer> equal, std::vector<PlacementContainer> lower);
 
     bool runOnce;
     bool timerOn;
@@ -55,6 +63,7 @@ private:
     int currentGate;
     int lastGate;
     int nextGate;
+    std::shared_ptr<float> player_race_progress;
 
     std::shared_ptr<raylib::Mesh> gate_mesh;
     raylib::Model gate_model;
@@ -78,6 +87,9 @@ private:
     float player_rotation;
 
     std::vector<std::unique_ptr<RacerAI>> ai_racers;
+
+    std::vector<PlacementContainer> placements;
+    std::string placement_text;
 
 };
 

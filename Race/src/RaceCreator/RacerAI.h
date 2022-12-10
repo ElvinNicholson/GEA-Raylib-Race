@@ -10,18 +10,20 @@ class RacerAI
 {
 public:
     RacerAI(raylib::Vector3 spawn_pos, float spawn_direction, raylib::Vector4 rgba_color, float _min_angle);
-    void update(float dt, raylib::Vector3 target);
+    void update(float dt, raylib::Vector3 current_gate_pos, raylib::Vector3 last_gate_pos);
     void render();
     std::shared_ptr<raylib::BoundingBox> getBoundingBox();
-    void setCurrentGate(int gate);
     int getCurrentGate();
+    int getLastGate();
     void passGate(int gates_total, int laps_total);
+    std::shared_ptr<float> getRaceProgress();
 
 protected:
 
 private:
     void updateBox();
     void move(raylib::Vector3 movement);
+    void updateRaceProgress(raylib::Vector3 current_gate_pos, raylib::Vector3 last_gate_pos);
 
     std::shared_ptr<raylib::BoundingBox> bounding_box;
     raylib::Model model;
@@ -31,10 +33,13 @@ private:
 
     int current_gate;
     int current_lap;
+    int last_gate;
 
     float speed;
     float yaw;
     float min_angle;
+
+    std::shared_ptr<float> race_progress;
 
     bool is_running;
     bool finished_race;

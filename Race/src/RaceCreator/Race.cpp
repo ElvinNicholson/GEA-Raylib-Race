@@ -14,6 +14,8 @@ Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string le
     waypoint_scale = 0.3;
 
     minimap.reset(new Minimap());
+
+    player_race_progress = std::make_shared<float>();
 }
 
 Race::~Race()
@@ -35,6 +37,8 @@ void Race::update(float dt)
 
     if (runOnce)
     {
+        createPlacementTable();
+
         updateLapsText();
 
         setAllGateInactive();
@@ -44,60 +48,32 @@ void Race::update(float dt)
         runOnce = false;
     }
 
-
-    if ((checkpoints.at(currentGate)->isColliding(player_collider) && currentGate == 0) ||
-        (checkpoints.at(currentGate)->isColliding(player_collider) && checkpoints.at(lastGate)->isGatePassed()))
-    {
-        timerOn = true;
-
-        std::cout << "Passed Gate " + std::to_string(currentGate) << std::endl;
-        checkpoints.at(currentGate)->passGate();
-        currentGate++;
-        lastGate = currentGate - 1;
-        nextGate = currentGate + 1;
-
-        if (nextGate > checkpoints.size() - 1)
-        {
-            nextGate = 0;
-        }
-
-        if (currentGate == checkpoints.size())
-        {
-            finishLap();
-        }
-
-        if (isWon)
-        {
-            setAllGateInactive();
-        }
-        else
-        {
-            setGateInactive(lastGate);
-            setGateActive(currentGate);
-            setGateNextActive(nextGate);
-        }
-    }
+    gateHandler();
 
     if (timerOn)
     {
         currentTime += dt;
     }
 
-    for (auto& racer : ai_racers)
+    for (auto& bots : ai_racers)
     {
-        racer->update(dt, checkpoints.at(racer->getCurrentGate())->getPosition());
+        bots->update(dt, checkpoints.at(bots->getCurrentGate())->getPosition(), checkpoints.at(bots->getLastGate())->getPosition());
 
-        if (checkpoints.at(racer->getCurrentGate())->isColliding(racer->getBoundingBox()))
+        if (checkpoints.at(bots->getCurrentGate())->isColliding(bots->getBoundingBox()))
         {
-            racer->passGate(checkpoints.size(), lapsTotal);
+            bots->passGate(checkpoints.size(), lapsTotal);
         }
     }
+
+    updatePlayerProgress();
+    sortPlacementTable();
 }
 
 void Race::render2D(Camera camera)
 {
     DrawText(TextFormat("Time : %02.02f s", currentTime), 700, 50, 80, BLACK);
     DrawText(lapsText.c_str(), 60, 900, 80, BLACK);
+    DrawText(placement_text.c_str(), 60, 800, 80, BLACK);
 
     updateWaypointPos(camera);
     minimap->renderMinimap();
@@ -136,6 +112,42 @@ void Race::resetRace()
     currentGate = 0;
     lastGate = 0;
     nextGate = 1;
+}
+
+void Race::gateHandler()
+{
+    if ((checkpoints.at(currentGate)->isColliding(player_collider) && currentGate == 0) ||
+        (checkpoints.at(currentGate)->isColliding(player_collider) && checkpoints.at(lastGate)->isGatePassed()))
+    {
+        timerOn = true;
+
+        std::cout << "Passed Gate " + std::to_string(currentGate) << std::endl;
+        checkpoints.at(currentGate)->passGate();
+        currentGate++;
+        lastGate = currentGate - 1;
+        nextGate = currentGate + 1;
+
+        if (nextGate > checkpoints.size() - 1)
+        {
+            nextGate = 0;
+        }
+
+        if (currentGate == checkpoints.size())
+        {
+            finishLap();
+        }
+
+        if (isWon)
+        {
+            setAllGateInactive();
+        }
+        else
+        {
+            setGateInactive(lastGate);
+            setGateActive(currentGate);
+            setGateNextActive(nextGate);
+        }
+    }
 }
 
 void Race::finishLap()
@@ -336,4 +348,100 @@ void Race::readLevel(std::string file_path)
     }
 
     file.close();
+}
+
+void Race::createPlacementTable()
+{
+    placements.emplace_back(PlacementContainer(player_race_progress, PLAYER));
+
+    for (auto& bots : ai_racers)
+    {
+        placements.emplace_back(bots->getRaceProgress(), BOT);
+    }
+}
+
+void Race::updatePlayerProgress()
+{
+    Vector3 cur_pos_to_target = Vector3Subtract(checkpoints.at(currentGate)->getPosition(), player_collider->min);
+    float car_displacement = sqrt(pow(cur_pos_to_target.x, 2) + pow(cur_pos_to_target.z, 2));
+
+    Vector3 last_to_cur_gate = Vector3Subtract(checkpoints.at(currentGate)->getPosition(), checkpoints.at(lastGate)->getPosition());
+    float gate_displacement = sqrt(pow(last_to_cur_gate.x, 2) + pow(last_to_cur_gate.z, 2));
+
+    float displacement_ratio;
+
+    if (gate_displacement == 0)
+    {
+        displacement_ratio = 0;
+    }
+    else
+    {
+        displacement_ratio = 1 - (car_displacement / gate_displacement);
+    }
+
+    *player_race_progress = (lapsCurrent * 100) + (currentGate + abs(displacement_ratio));
+}
+
+void Race::sortPlacementTable()
+{
+    placements = quickSort(placements);
+
+    int i = 0;
+    for (auto& container : placements)
+    {
+        if (container.getType() == PLAYER)
+        {
+            break;
+        }
+        i++;
+    }
+
+    placement_text = "Position: " + std::to_string(i + 1);
+}
+
+// Quick sort algorithm based on my previous work on Games Tech 101, Worksheet 2, Task 2
+std::vector<PlacementContainer> Race::quickSort(std::vector<PlacementContainer> vector)
+{
+    std::vector<PlacementContainer> lower;
+    std::vector<PlacementContainer> higher;
+    std::vector<PlacementContainer> equal;
+
+    if (vector.size() > 1)
+    {
+        float pivot = vector.at(rand() % vector.size()).getRaceProgress();
+        for (auto& container : vector)
+        {
+            if (container.getRaceProgress() < pivot)
+            {
+                lower.emplace_back(container);
+            }
+            else if (container.getRaceProgress() > pivot)
+            {
+                higher.emplace_back(container);
+            }
+            else
+            {
+                equal.emplace_back(container);
+            }
+        }
+
+        return loopRecursiveSort(higher, equal, lower);
+    }
+    else
+    {
+        return vector;
+    }
+}
+
+std::vector<PlacementContainer> Race::loopRecursiveSort(std::vector<PlacementContainer> higher, std::vector<PlacementContainer> equal, std::vector<PlacementContainer> lower)
+{
+    higher = quickSort(higher);
+    lower = quickSort(lower);
+
+    std::vector<PlacementContainer> temp_vector;
+    temp_vector.reserve(lower.size() + higher.size() + equal.size());
+    temp_vector.insert(temp_vector.end(), higher.begin(), higher.end());
+    temp_vector.insert(temp_vector.end(), equal.begin(), equal.end());
+    temp_vector.insert(temp_vector.end(), lower.begin(), lower.end());
+    return temp_vector;
 }

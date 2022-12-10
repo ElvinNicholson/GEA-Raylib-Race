@@ -20,9 +20,11 @@ model_pos(spawn_pos), yaw(spawn_direction), min_angle(_min_angle)
     finished_race = false;
 
     color = raylib::Color((unsigned char)rgba_color.x, (unsigned char)rgba_color.y, (unsigned char)rgba_color.z, (unsigned char)rgba_color.w);
+
+    race_progress = std::make_shared<float>();
 }
 
-void RacerAI::update(float dt, raylib::Vector3 target)
+void RacerAI::update(float dt, raylib::Vector3 current_gate_pos, raylib::Vector3 last_gate_pos)
 {
     if (!is_running)
     {
@@ -30,12 +32,12 @@ void RacerAI::update(float dt, raylib::Vector3 target)
     }
 
     Vector3 forward = Vector3Normalize(Vector3Subtract(looking_at, model_pos));
-    Vector3 object = Vector3Normalize(Vector3Subtract(target, model_pos));
+    Vector3 object = Vector3Normalize(Vector3Subtract(current_gate_pos, model_pos));
 
     float angle = Vector3Angle(forward, object) * RAD2DEG;
 
-    float d = (target.x - model_pos.x) * (looking_at.z - model_pos.z) -
-              (target.z - model_pos.z) * (looking_at.x - model_pos.x);
+    float d = (current_gate_pos.x - model_pos.x) * (looking_at.z - model_pos.z) -
+              (current_gate_pos.z - model_pos.z) * (looking_at.x - model_pos.x);
 
     // Decide to turn left or right
     if (d > 0 && angle > min_angle)
@@ -50,8 +52,10 @@ void RacerAI::update(float dt, raylib::Vector3 target)
     model.transform = MatrixRotateXYZ((Vector3){0, DEG2RAD * yaw, 0});
     looking_at = Vector3{model_pos.x + cos(yaw * DEG2RAD) * 20, 2.5, model_pos.z - sin(yaw * DEG2RAD) * 20};
 
-    Vector3 cur_pos_to_target = Vector3Subtract(target, model_pos);
+    Vector3 cur_pos_to_target = Vector3Subtract(current_gate_pos, model_pos);
     float displacement = sqrt(pow(cur_pos_to_target.x, 2) + pow(cur_pos_to_target.z, 2));
+
+    updateRaceProgress(current_gate_pos, last_gate_pos);
 
     // If car is facing in the general direction or far away from the gate move forward
     if (angle < 45 || displacement > 20)
@@ -94,19 +98,20 @@ void RacerAI::move(raylib::Vector3 movement)
     updateBox();
 }
 
-void RacerAI::setCurrentGate(int gate)
-{
-    current_gate = gate;
-}
-
 int RacerAI::getCurrentGate()
 {
     return current_gate;
 }
 
+int RacerAI::getLastGate()
+{
+    return last_gate;
+}
+
 void RacerAI::passGate(int gates_total, int laps_total)
 {
     current_gate += 1;
+    last_gate = current_gate - 1;
     if (current_gate == gates_total)
     {
         // Finished a lap
@@ -120,4 +125,31 @@ void RacerAI::passGate(int gates_total, int laps_total)
 
         current_lap += 1;
     }
+}
+
+std::shared_ptr<float> RacerAI::getRaceProgress()
+{
+    return race_progress;
+}
+
+void RacerAI::updateRaceProgress(raylib::Vector3 current_gate_pos, raylib::Vector3 last_gate_pos)
+{
+    Vector3 cur_pos_to_target = Vector3Subtract(current_gate_pos, model_pos);
+    float car_displacement = sqrt(pow(cur_pos_to_target.x, 2) + pow(cur_pos_to_target.z, 2));
+
+    Vector3 last_to_cur_gate = Vector3Subtract(current_gate_pos, last_gate_pos);
+    float gate_displacement = sqrt(pow(last_to_cur_gate.x, 2) + pow(last_to_cur_gate.z, 2));
+
+    float displacement_ratio;
+
+    if (gate_displacement == 0)
+    {
+        displacement_ratio = 0;
+    }
+    else
+    {
+        displacement_ratio = 1 - (car_displacement / gate_displacement);
+    }
+
+    *race_progress = (current_lap * 100) + (current_gate + abs(displacement_ratio));
 }
