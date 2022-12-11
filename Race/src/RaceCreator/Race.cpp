@@ -297,7 +297,6 @@ void Race::readLevel(std::string file_path)
     setActiveMaterial(levelData.value("activeMaterialFile", ""));
     setNextActiveMaterial(levelData.value("nextActiveMaterialFile", ""));
 
-
     for (auto& cpData : levelData["checkpoints"])
     {
         std::vector<float> temp_pos;

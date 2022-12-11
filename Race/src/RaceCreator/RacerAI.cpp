@@ -13,6 +13,7 @@ model_pos(spawn_pos), yaw(spawn_direction), min_angle(_min_angle)
 
     speed = 40;
 
+    last_gate = 0;
     current_gate = 0;
     current_lap = 1;
 
