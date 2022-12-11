@@ -1,7 +1,7 @@
 #include "RacerAI.h"
 
-RacerAI::RacerAI(raylib::Vector3 spawn_pos, float spawn_direction, raylib::Vector4 rgba_color, float _min_angle) :
-model_pos(spawn_pos), yaw(spawn_direction), min_angle(_min_angle)
+RacerAI::RacerAI(raylib::Vector3 spawn_pos, float spawn_direction, raylib::Vector4 rgba_color, float _min_angle, std::string _bot_name) :
+model_pos(spawn_pos), yaw(spawn_direction), min_angle(_min_angle), bot_name(_bot_name)
 {
     bounding_box = std::make_shared<raylib::BoundingBox>();
 
@@ -154,3 +154,22 @@ void RacerAI::updateRaceProgress(raylib::Vector3 current_gate_pos, raylib::Vecto
 
     *race_progress = (current_lap * 100) + (current_gate + abs(displacement_ratio));
 }
+
+std::string RacerAI::getName()
+{
+    return bot_name;
+}
+
+void RacerAI::resetBot(raylib::Vector3 position, float _yaw)
+{
+    model_pos = position;
+    yaw = _yaw;
+
+    last_gate = 0;
+    current_gate = 0;
+    current_lap = 1;
+
+    is_running = true;
+    finished_race = false;
+}
+

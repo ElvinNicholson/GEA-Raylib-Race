@@ -12,15 +12,17 @@ enum RacerType
 class PlacementContainer
 {
 public:
-    PlacementContainer(std::shared_ptr<float> _race_progress, RacerType _type);
+    PlacementContainer(std::shared_ptr<float> _race_progress, RacerType _type, std::string _name);
     float getRaceProgress();
     RacerType getType();
+    std::string getName();
 
 protected:
 
 private:
     std::shared_ptr<float> race_progress;
     RacerType type;
+    std::string name;
 };
 
 #endif //RAYLIB_CPP_EXAMPLE_PLACEMENTCONTAINER_H

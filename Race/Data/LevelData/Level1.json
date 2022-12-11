@@ -1,6 +1,6 @@
 {
   "raceName" : "level 1",
-  "numberOfLaps" : "10",
+  "numberOfLaps" : "1",
   "modelFile" : "../Data/Models/Gate.obj",
   "inactiveMaterialFile" : "../Data/Materials/Red.png",
   "activeMaterialFile" : "../Data/Materials/Green.png",
@@ -29,24 +29,28 @@
   ],
   "racingBots" : [
     {
+      "botName" : "Bot Beginner",
       "spawnPosition" : ["0", "2.5", "-20"],
       "spawnDirection" : "-90",
       "colorRGBA" : ["230", "41", "55", "255"],
       "minAngle" : "40"
     },
     {
+      "botName" : "Bot Expert",
       "spawnPosition" : ["0", "2.5", "-20"],
       "spawnDirection" : "-90",
       "colorRGBA" : ["0", "228", "48", "255"],
       "minAngle" : "10"
     },
     {
+      "botName" : "Bot Proficient",
       "spawnPosition" : ["0", "2.5", "-20"],
       "spawnDirection" : "-90",
       "colorRGBA" : ["253", "249", "0", "255"],
       "minAngle" : "20"
     },
     {
+      "botName" : "Bot Competent",
       "spawnPosition" : ["0", "2.5", "-20"],
       "spawnDirection" : "-90",
       "colorRGBA" : ["0", "121", "241", "255"],

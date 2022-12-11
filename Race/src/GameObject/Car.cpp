@@ -9,6 +9,10 @@ Car::Car(std::shared_ptr<raylib::BoundingBox> _player_box) : player_box(_player_
 
     model_pos = Vector3{0, 2.5, -20};
     speed = 40;
+
+    yaw = -90;
+    yaw_cam = -90;
+    model.transform = MatrixRotateXYZ((Vector3){0, DEG2RAD * yaw, 0});
 }
 
 void Car::updateCar(float dt)
@@ -48,7 +52,6 @@ void Car::updateCar(float dt)
             yaw -= 1.5;
             yaw_cam -= 1.4;
         }
-
         model.transform = MatrixRotateXYZ((Vector3){0, DEG2RAD * yaw, 0});
     }
     else

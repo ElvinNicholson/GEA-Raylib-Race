@@ -15,7 +15,7 @@
 class Race
 {
 public:
-    Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string level_data_path);
+    Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string _level_data_path);
     ~Race();
     void update(float dt);
     void render2D(Camera camera);
@@ -44,12 +44,14 @@ private:
     void updateWaypointPos(Camera camera);
 
     void readLevel(std::string file_path);
+    void resetBots();
 
     void createPlacementTable();
     void updatePlayerProgress();
     void sortPlacementTable();
     std::vector<PlacementContainer> quickSort(std::vector<PlacementContainer> vector);
     std::vector<PlacementContainer> loopRecursiveSort(std::vector<PlacementContainer> higher, std::vector<PlacementContainer> equal, std::vector<PlacementContainer> lower);
+    void displayFinalPlacement();
 
     bool runOnce;
     bool timerOn;
@@ -91,6 +93,7 @@ private:
     std::vector<PlacementContainer> placements;
     std::string placement_text;
 
+    std::string level_data_path;
 };
 
 

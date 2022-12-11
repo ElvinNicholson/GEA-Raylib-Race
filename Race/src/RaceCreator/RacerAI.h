@@ -9,14 +9,16 @@
 class RacerAI
 {
 public:
-    RacerAI(raylib::Vector3 spawn_pos, float spawn_direction, raylib::Vector4 rgba_color, float _min_angle);
+    RacerAI(raylib::Vector3 spawn_pos, float spawn_direction, raylib::Vector4 rgba_color, float _min_angle, std::string _bot_name);
     void update(float dt, raylib::Vector3 current_gate_pos, raylib::Vector3 last_gate_pos);
     void render();
+    void passGate(int gates_total, int laps_total);
     std::shared_ptr<raylib::BoundingBox> getBoundingBox();
     int getCurrentGate();
     int getLastGate();
-    void passGate(int gates_total, int laps_total);
     std::shared_ptr<float> getRaceProgress();
+    std::string getName();
+    void resetBot(raylib::Vector3 position, float _yaw);
 
 protected:
 
@@ -46,6 +48,7 @@ private:
 
     raylib::Color color;
 
+    std::string bot_name;
 };
 
 

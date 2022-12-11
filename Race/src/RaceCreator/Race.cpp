@@ -1,6 +1,7 @@
 #include "Race.h"
 
-Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string level_data_path) : player_collider(_player_collider)
+Race::Race(std::shared_ptr<raylib::BoundingBox> _player_collider, std::string _level_data_path) :
+player_collider(_player_collider), level_data_path(_level_data_path)
 {
     readLevel(level_data_path);
 
@@ -71,6 +72,12 @@ void Race::update(float dt)
 
 void Race::render2D(Camera camera)
 {
+    if (isWon)
+    {
+        displayFinalPlacement();
+        return;
+    }
+
     DrawText(TextFormat("Time : %02.02f s", currentTime), 700, 50, 80, BLACK);
     DrawText(lapsText.c_str(), 60, 900, 80, BLACK);
     DrawText(placement_text.c_str(), 60, 800, 80, BLACK);
@@ -112,6 +119,8 @@ void Race::resetRace()
     currentGate = 0;
     lastGate = 0;
     nextGate = 1;
+
+    resetBots();
 }
 
 void Race::gateHandler()
@@ -288,8 +297,7 @@ void Race::updateWaypointPos(Camera camera)
 void Race::readLevel(std::string file_path)
 {
     std::ifstream file(file_path);
-    nlohmann::json levelData;
-    file >> levelData;
+    nlohmann::json levelData = nlohmann::json::parse(file);
 
     setLaps(stoi(levelData.value("numberOfLaps", "1")));
     setModel(levelData.value("modelFile", ""));
@@ -342,20 +350,73 @@ void Race::readLevel(std::string file_path)
 
         float spawn_dir = std::stof(botData.value("spawnDirection", "0"));
         float min_angle = std::stof(botData.value("minAngle", "20"));
+        std::string bot_name = botData.value("botName", "Bot");
 
-        ai_racers.emplace_back(new RacerAI(spawn_pos, spawn_dir, rgba, min_angle));
+        ai_racers.emplace_back(new RacerAI(spawn_pos, spawn_dir, rgba, min_angle, bot_name));
     }
 
     file.close();
 }
 
+void Race::resetBots()
+{
+    std::ifstream file(level_data_path);
+    nlohmann::json levelData = nlohmann::json::parse(file);
+
+    int i = 0;
+    for (auto& botData : levelData["racingBots"])
+    {
+        std::vector<float> temp_vec;
+        temp_vec.reserve(3);
+        for (auto& pos : botData["spawnPosition"])
+        {
+            std::string val = pos;
+            temp_vec.emplace_back(std::stoi(val));
+        }
+
+        raylib::Vector3 spawn_pos = Vector3{temp_vec.at(0), temp_vec.at(1), temp_vec.at(2)};
+
+        float spawn_dir = std::stof(botData.value("spawnDirection", "0"));
+
+        ai_racers[i]->resetBot(spawn_pos, spawn_dir);
+        i++;
+    }
+
+    file.close();
+}
+
+void Race::displayFinalPlacement()
+{
+    int x_offset = 1000;
+    int i = 1;
+
+    // Only display top 5 racers
+    for (int j = 0; j < 5; j++)
+    {
+        std::string text = std::to_string(i) + " " + placements[j].getName();
+
+        if (i % 2 == 0)
+        {
+            DrawRectangle(x_offset, 90 + 100*i, 1000, 100, Fade(LIGHTGRAY, 0.9f));
+        }
+        else
+        {
+            DrawRectangle(x_offset, 90 + 100*i, 1000, 100, Fade(LIGHTGRAY, 0.6f));
+        }
+
+        raylib::DrawText(text.c_str(), x_offset + 50, 100 + 100*i, 80, BLACK);
+        i++;
+    }
+}
+
 void Race::createPlacementTable()
 {
-    placements.emplace_back(PlacementContainer(player_race_progress, PLAYER));
+    placements.clear();
+    placements.emplace_back(PlacementContainer(player_race_progress, PLAYER, "Player"));
 
     for (auto& bots : ai_racers)
     {
-        placements.emplace_back(bots->getRaceProgress(), BOT);
+        placements.emplace_back(bots->getRaceProgress(), BOT, bots->getName());
     }
 }
 
