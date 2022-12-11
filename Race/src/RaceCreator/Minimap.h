@@ -7,8 +7,7 @@
 #define GLSL_VERSION            100
 #endif
 
-#include "raylib-cpp.hpp"
-#include "raylib.h"
+#include "MinimapContainer.h"
 
 class Minimap
 {
@@ -16,6 +15,7 @@ public:
     Minimap();
     void updateMinimap(raylib::Vector3 player_pos, raylib::Vector3 checkpoint_pos, float player_rotation, bool is_running);
     void renderMinimap();
+    void addBots(std::shared_ptr<raylib::Vector3> pos, std::shared_ptr<float> dir, raylib::Color color);
 
 protected:
 
@@ -23,11 +23,13 @@ private:
     Shader alpha_discard;
     raylib::RenderTexture2D minimap;
     raylib::Camera3D minimap_cam;
-    raylib::Texture minimap_player;
+    raylib::Texture minimap_racer;
     raylib::Texture minimap_checkpoint;
-    raylib::Rectangle minimap_player_rect;
+    raylib::Rectangle minimap_racer_rect;
     raylib::Rectangle minimap_checkpoint_rect;
     raylib::Vector3 bill_up;
+
+    std::vector<MinimapContainer> bot_data;
 
 };
 

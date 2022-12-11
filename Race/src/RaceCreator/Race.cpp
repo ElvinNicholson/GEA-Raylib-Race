@@ -15,6 +15,10 @@ player_collider(_player_collider), level_data_path(_level_data_path)
     waypoint_scale = 0.3;
 
     minimap.reset(new Minimap());
+    for(auto& bots : ai_racers)
+    {
+        minimap->addBots(bots->getPosition(), bots->getDirection(), bots->getColor());
+    }
 
     player_race_progress = std::make_shared<float>();
 }
@@ -82,7 +86,6 @@ void Race::render2D(Camera camera)
     DrawText(lapsText.c_str(), 60, 900, 80, BLACK);
     DrawText(placement_text.c_str(), 60, 800, 80, BLACK);
 
-    updateWaypointPos(camera);
     minimap->renderMinimap();
 
     if (!isRunning)
@@ -90,6 +93,7 @@ void Race::render2D(Camera camera)
         return;
     }
 
+    updateWaypointPos(camera);
     DrawTextureEx(waypoint, waypoint_pos, waypoint_rotation, waypoint_scale, WHITE);
     DrawTextureEx(waypoint_flag, waypoint_flag_pos, 0, waypoint_scale, WHITE);
 }

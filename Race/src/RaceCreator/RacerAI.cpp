@@ -1,10 +1,11 @@
 #include "RacerAI.h"
 
 RacerAI::RacerAI(raylib::Vector3 spawn_pos, float spawn_direction, raylib::Vector4 rgba_color, float _min_angle, std::string _bot_name) :
-model_pos(spawn_pos), yaw(spawn_direction), min_angle(_min_angle), bot_name(_bot_name)
+yaw(spawn_direction), min_angle(_min_angle), bot_name(_bot_name)
 {
     bounding_box = std::make_shared<raylib::BoundingBox>();
 
+    model_pos = std::make_shared<raylib::Vector3>(spawn_pos);
     model = LoadModel("../Data/Models/Car3.obj");
     model_texture = LoadTexture("../Data/Materials/car Texture.png");
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = model_texture;
@@ -23,6 +24,7 @@ model_pos(spawn_pos), yaw(spawn_direction), min_angle(_min_angle), bot_name(_bot
     color = raylib::Color((unsigned char)rgba_color.x, (unsigned char)rgba_color.y, (unsigned char)rgba_color.z, (unsigned char)rgba_color.w);
 
     race_progress = std::make_shared<float>();
+    direction_angle = std::make_shared<float>();
 }
 
 void RacerAI::update(float dt, raylib::Vector3 current_gate_pos, raylib::Vector3 last_gate_pos)
@@ -32,13 +34,14 @@ void RacerAI::update(float dt, raylib::Vector3 current_gate_pos, raylib::Vector3
         return;
     }
 
-    Vector3 forward = Vector3Normalize(Vector3Subtract(looking_at, model_pos));
-    Vector3 object = Vector3Normalize(Vector3Subtract(current_gate_pos, model_pos));
+    Vector3 forward = Vector3Normalize(Vector3Subtract(looking_at, *model_pos));
+    Vector3 object = Vector3Normalize(Vector3Subtract(current_gate_pos, *model_pos));
 
     float angle = Vector3Angle(forward, object) * RAD2DEG;
+    *direction_angle = atan2(forward.z, -forward.x) * RAD2DEG + 180;
 
-    float d = (current_gate_pos.x - model_pos.x) * (looking_at.z - model_pos.z) -
-              (current_gate_pos.z - model_pos.z) * (looking_at.x - model_pos.x);
+    float d = (current_gate_pos.x - model_pos->x) * (looking_at.z - model_pos->z) -
+              (current_gate_pos.z - model_pos->z) * (looking_at.x - model_pos->x);
 
     // Decide to turn left or right
     if (d > 0 && angle > min_angle)
@@ -51,9 +54,9 @@ void RacerAI::update(float dt, raylib::Vector3 current_gate_pos, raylib::Vector3
     }
 
     model.transform = MatrixRotateXYZ((Vector3){0, DEG2RAD * yaw, 0});
-    looking_at = Vector3{model_pos.x + cos(yaw * DEG2RAD) * 20, 2.5, model_pos.z - sin(yaw * DEG2RAD) * 20};
+    looking_at = Vector3{model_pos->x + cos(yaw * DEG2RAD) * 20, 2.5, model_pos->z - sin(yaw * DEG2RAD) * 20};
 
-    Vector3 cur_pos_to_target = Vector3Subtract(current_gate_pos, model_pos);
+    Vector3 cur_pos_to_target = Vector3Subtract(current_gate_pos, *model_pos);
     float displacement = sqrt(pow(cur_pos_to_target.x, 2) + pow(cur_pos_to_target.z, 2));
 
     updateRaceProgress(current_gate_pos, last_gate_pos);
@@ -76,7 +79,7 @@ void RacerAI::update(float dt, raylib::Vector3 current_gate_pos, raylib::Vector3
 
 void RacerAI::render()
 {
-    DrawModel(model, model_pos, 1, color);
+    DrawModel(model, *model_pos, 1, color);
 }
 
 std::shared_ptr<raylib::BoundingBox> RacerAI::getBoundingBox()
@@ -87,15 +90,15 @@ std::shared_ptr<raylib::BoundingBox> RacerAI::getBoundingBox()
 void RacerAI::updateBox()
 {
     raylib::BoundingBox new_box;
-    new_box = BoundingBox{{model_pos.x - 2,model_pos.y - 2,model_pos.z - 2},
-                          {model_pos.x + 2,model_pos.y + 2,model_pos.z + 2}};
+    new_box = BoundingBox{{model_pos->x - 2,model_pos->y - 2,model_pos->z - 2},
+                          {model_pos->x + 2,model_pos->y + 2,model_pos->z + 2}};
 
     *bounding_box = new_box;
 }
 
 void RacerAI::move(raylib::Vector3 movement)
 {
-    model_pos = Vector3Add(model_pos, movement);
+    *model_pos = Vector3Add(*model_pos, movement);
     updateBox();
 }
 
@@ -135,7 +138,7 @@ std::shared_ptr<float> RacerAI::getRaceProgress()
 
 void RacerAI::updateRaceProgress(raylib::Vector3 current_gate_pos, raylib::Vector3 last_gate_pos)
 {
-    Vector3 cur_pos_to_target = Vector3Subtract(current_gate_pos, model_pos);
+    Vector3 cur_pos_to_target = Vector3Subtract(current_gate_pos, *model_pos);
     float car_displacement = sqrt(pow(cur_pos_to_target.x, 2) + pow(cur_pos_to_target.z, 2));
 
     Vector3 last_to_cur_gate = Vector3Subtract(current_gate_pos, last_gate_pos);
@@ -160,9 +163,14 @@ std::string RacerAI::getName()
     return bot_name;
 }
 
+std::shared_ptr<raylib::Vector3> RacerAI::getPosition()
+{
+    return model_pos;
+}
+
 void RacerAI::resetBot(raylib::Vector3 position, float _yaw)
 {
-    model_pos = position;
+    *model_pos = position;
     yaw = _yaw;
 
     last_gate = 0;
@@ -173,3 +181,12 @@ void RacerAI::resetBot(raylib::Vector3 position, float _yaw)
     finished_race = false;
 }
 
+raylib::Color RacerAI::getColor()
+{
+    return color;
+}
+
+std::shared_ptr<float> RacerAI::getDirection()
+{
+    return direction_angle;
+}

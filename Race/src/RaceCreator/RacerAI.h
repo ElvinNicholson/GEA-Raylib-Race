@@ -17,6 +17,9 @@ public:
     int getCurrentGate();
     int getLastGate();
     std::shared_ptr<float> getRaceProgress();
+    std::shared_ptr<raylib::Vector3> getPosition();
+    std::shared_ptr<float> getDirection();
+    raylib::Color getColor();
     std::string getName();
     void resetBot(raylib::Vector3 position, float _yaw);
 
@@ -30,7 +33,7 @@ private:
     std::shared_ptr<raylib::BoundingBox> bounding_box;
     raylib::Model model;
     raylib::Texture2D model_texture;
-    raylib::Vector3 model_pos;
+    std::shared_ptr<raylib::Vector3> model_pos;
     raylib::Vector3 looking_at;
 
     int current_gate;
@@ -40,6 +43,7 @@ private:
     float speed;
     float yaw;
     float min_angle;
+    std::shared_ptr<float> direction_angle;
 
     std::shared_ptr<float> race_progress;
 
