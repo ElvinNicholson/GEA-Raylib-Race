@@ -76,6 +76,9 @@ private:
     float currentTime;
 
     std::shared_ptr<raylib::BoundingBox> player_collider;
+    std::shared_ptr<raylib::Vector3> player_pos;
+    std::shared_ptr<float> player_rotation;
+
     std::vector<std::unique_ptr<Gate>> checkpoints;
 
     raylib::Texture waypoint;
@@ -86,7 +89,6 @@ private:
     float waypoint_scale;
 
     std::unique_ptr<Minimap> minimap;
-    float player_rotation;
 
     std::vector<std::unique_ptr<RacerAI>> ai_racers;
 

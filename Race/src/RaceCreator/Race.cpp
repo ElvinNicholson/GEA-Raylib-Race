@@ -15,9 +15,14 @@ player_collider(_player_collider), level_data_path(_level_data_path)
     waypoint_scale = 0.3;
 
     minimap.reset(new Minimap());
+
+    player_pos = std::make_shared<raylib::Vector3>(_player_collider->min);
+    player_rotation = std::make_shared<float>();
+
+    minimap->addData(player_pos, player_rotation, WHITE);
     for(auto& bots : ai_racers)
     {
-        minimap->addBots(bots->getPosition(), bots->getDirection(), bots->getColor());
+        minimap->addData(bots->getPosition(), bots->getDirection(), bots->getColor());
     }
 
     player_race_progress = std::make_shared<float>();
@@ -33,7 +38,7 @@ Race::~Race()
 
 void Race::update(float dt)
 {
-    minimap->updateMinimap(player_collider->min, checkpoints.at(currentGate)->getPosition(), player_rotation, isRunning);
+    minimap->updateMinimap(checkpoints.at(currentGate)->getPosition(), isRunning);
 
     if (!isRunning)
     {
@@ -76,13 +81,14 @@ void Race::update(float dt)
 
 void Race::render2D(Camera camera)
 {
+    DrawText(TextFormat("Time : %02.02f s", currentTime), 700, 50, 80, BLACK);
+
     if (isWon)
     {
         displayFinalPlacement();
         return;
     }
 
-    DrawText(TextFormat("Time : %02.02f s", currentTime), 700, 50, 80, BLACK);
     DrawText(lapsText.c_str(), 60, 900, 80, BLACK);
     DrawText(placement_text.c_str(), 60, 800, 80, BLACK);
 
@@ -295,7 +301,7 @@ void Race::updateWaypointPos(Camera camera)
         }
     }
 
-    player_rotation = atan2(forward.z, -forward.x) * RAD2DEG + 180;
+    *player_rotation = atan2(forward.z, -forward.x) * RAD2DEG + 180;
 }
 
 void Race::readLevel(std::string file_path)
@@ -416,6 +422,7 @@ void Race::displayFinalPlacement()
 void Race::createPlacementTable()
 {
     placements.clear();
+    placements.reserve(ai_racers.size() + 1);
     placements.emplace_back(PlacementContainer(player_race_progress, PLAYER, "Player"));
 
     for (auto& bots : ai_racers)
@@ -426,7 +433,8 @@ void Race::createPlacementTable()
 
 void Race::updatePlayerProgress()
 {
-    Vector3 cur_pos_to_target = Vector3Subtract(checkpoints.at(currentGate)->getPosition(), player_collider->min);
+    *player_pos = player_collider->max;
+    Vector3 cur_pos_to_target = Vector3Subtract(checkpoints.at(currentGate)->getPosition(), *player_pos);
     float car_displacement = sqrt(pow(cur_pos_to_target.x, 2) + pow(cur_pos_to_target.z, 2));
 
     Vector3 last_to_cur_gate = Vector3Subtract(checkpoints.at(currentGate)->getPosition(), checkpoints.at(lastGate)->getPosition());
@@ -450,7 +458,8 @@ void Race::sortPlacementTable()
 {
     placements = quickSort(placements);
 
-    int i = 0;
+    // Get player placement
+    int i = 1;
     for (auto& container : placements)
     {
         if (container.getType() == PLAYER)
@@ -460,7 +469,7 @@ void Race::sortPlacementTable()
         i++;
     }
 
-    placement_text = "Position: " + std::to_string(i + 1);
+    placement_text = "Position: " + std::to_string(i);
 }
 
 // Quick sort algorithm based on my previous work on Games Tech 101, Worksheet 2, Task 2

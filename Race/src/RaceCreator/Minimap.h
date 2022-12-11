@@ -13,9 +13,9 @@ class Minimap
 {
 public:
     Minimap();
-    void updateMinimap(raylib::Vector3 player_pos, raylib::Vector3 checkpoint_pos, float player_rotation, bool is_running);
+    void updateMinimap(raylib::Vector3 checkpoint_pos, bool is_running);
     void renderMinimap();
-    void addBots(std::shared_ptr<raylib::Vector3> pos, std::shared_ptr<float> dir, raylib::Color color);
+    void addData(std::shared_ptr<raylib::Vector3> pos, std::shared_ptr<float> dir, raylib::Color color);
 
 protected:
 
@@ -29,7 +29,7 @@ private:
     raylib::Rectangle minimap_checkpoint_rect;
     raylib::Vector3 bill_up;
 
-    std::vector<MinimapContainer> bot_data;
+    std::vector<MinimapContainer> map_data;
 
 };
 

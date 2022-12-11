@@ -1,6 +1,6 @@
 {
   "raceName" : "level 1",
-  "numberOfLaps" : "10",
+  "numberOfLaps" : "2",
   "modelFile" : "../Data/Models/Gate.obj",
   "inactiveMaterialFile" : "../Data/Materials/Red.png",
   "activeMaterialFile" : "../Data/Materials/Green.png",
