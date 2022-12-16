@@ -265,21 +265,15 @@ void Race::setGateNextActive(int gate_number)
 
 void Race::updateWaypointPos(Camera camera)
 {
-    waypoint_pos = GetWorldToScreen(checkpoints.at(currentGate)->getPosition(), camera);
-    waypoint_pos.x = waypoint_pos.x - 75;
-    waypoint_pos.y = waypoint_pos.y - 200;
-    waypoint_rotation = 0;
-
-    waypoint_flag_pos = Vector2{waypoint_pos.x + 40, waypoint_pos.y + 25};
-
     Vector3 forward = Vector3Normalize(Vector3Subtract(camera.target, camera.position));
-    Vector3 object = Vector3Normalize(Vector3Subtract(camera.position, checkpoints.at(currentGate)->getPosition()));
+    Vector3 object = Vector3Normalize(Vector3Subtract(checkpoints.at(currentGate)->getPosition(), camera.position));
     forward.y = 0;
     object.y = 0;
     float angle = Vector3Angle(forward, object) * RAD2DEG;
 
-    if (angle < 140)
+    if (angle > camera.fovy * 0.75)
     {
+        // Cannot see checkpoint
         float d = (checkpoints.at(currentGate)->getPosition().x - camera.position.x) * (camera.target.z - camera.position.z) -
                   (checkpoints.at(currentGate)->getPosition().z - camera.position.z) * (camera.target.x - camera.position.x);
 
@@ -300,8 +294,19 @@ void Race::updateWaypointPos(Camera camera)
             waypoint_flag_pos = Vector2{waypoint_pos.x + 25, waypoint_pos.y - 120};
         }
     }
+    else
+    {
+        // Can see checkpoint
+        waypoint_pos = GetWorldToScreen(checkpoints.at(currentGate)->getPosition(), camera);
+        waypoint_pos.x = waypoint_pos.x - 75;
+        waypoint_pos.y = waypoint_pos.y - 200;
+        waypoint_rotation = 0;
 
-    *player_rotation = atan2(forward.z, -forward.x) * RAD2DEG + 180;
+        waypoint_flag_pos = Vector2{waypoint_pos.x + 40, waypoint_pos.y + 25};
+    }
+
+    // Value used for minimap icon rotation
+    *player_rotation = atan2(-forward.z, forward.x) * RAD2DEG;
 }
 
 void Race::readLevel(std::string file_path)
@@ -397,13 +402,23 @@ void Race::resetBots()
 
 void Race::displayFinalPlacement()
 {
+    if (ai_racers.empty())
+    {
+        return;
+    }
+
     int x_offset = 1000;
     int i = 1;
 
     // Only display top 5 racers
-    for (int j = 0; j < 5; j++)
+    for (auto& placement_data : placements)
     {
-        std::string text = std::to_string(i) + " " + placements[j].getName();
+        if (i > 5)
+        {
+            break;
+        }
+
+        std::string text = std::to_string(i) + " " + placement_data.getName();
 
         if (i % 2 == 0)
         {

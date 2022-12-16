@@ -35,10 +35,10 @@ void RacerAI::update(float dt, raylib::Vector3 current_gate_pos, raylib::Vector3
     }
 
     Vector3 forward = Vector3Normalize(Vector3Subtract(looking_at, *model_pos));
-    Vector3 object = Vector3Normalize(Vector3Subtract(current_gate_pos, *model_pos));
+    Vector3 target = Vector3Subtract(current_gate_pos, *model_pos);
 
-    float angle = Vector3Angle(forward, object) * RAD2DEG;
-    *direction_angle = atan2(forward.z, -forward.x) * RAD2DEG + 180;
+    float angle = Vector3Angle(forward, target) * RAD2DEG;
+    *direction_angle = atan2(-forward.z, forward.x) * RAD2DEG;
 
     float d = (current_gate_pos.x - model_pos->x) * (looking_at.z - model_pos->z) -
               (current_gate_pos.z - model_pos->z) * (looking_at.x - model_pos->x);
@@ -56,8 +56,7 @@ void RacerAI::update(float dt, raylib::Vector3 current_gate_pos, raylib::Vector3
     model.transform = MatrixRotateXYZ((Vector3){0, DEG2RAD * yaw, 0});
     looking_at = Vector3{model_pos->x + cos(yaw * DEG2RAD) * 20, 2.5, model_pos->z - sin(yaw * DEG2RAD) * 20};
 
-    Vector3 cur_pos_to_target = Vector3Subtract(current_gate_pos, *model_pos);
-    float displacement = sqrt(pow(cur_pos_to_target.x, 2) + pow(cur_pos_to_target.z, 2));
+    float displacement = sqrt(pow(target.x, 2) + pow(target.z, 2));
 
     updateRaceProgress(current_gate_pos, last_gate_pos);
 
