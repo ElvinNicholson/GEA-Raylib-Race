@@ -3,8 +3,8 @@
 
 Car::Car(std::shared_ptr<raylib::BoundingBox> _player_box) : player_box(_player_box)
 {
-    model = LoadModel("../Data/Models/Car3.obj");
-    model_texture = LoadTexture("../Data/Materials/car Texture.png");
+    model = LoadModel("../Resources/Models/Car3.obj");
+    model_texture = LoadTexture("../Resources/Materials/car Texture.png");
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = model_texture;
 
     model_pos = Vector3{0, 2.5, -20};

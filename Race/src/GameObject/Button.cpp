@@ -3,7 +3,7 @@
 Button::Button(std::string _button_text, raylib::Vector2 _button_pos) : button_text(_button_text), button_pos(_button_pos)
 {
     button_state = 0;
-    button_texture = LoadTexture("../Data/Texture/button.png");
+    button_texture = LoadTexture("../Resources/Texture/button.png");
     button_bounds = Rectangle{button_pos.x, button_pos.y, (float)button_texture.width/2, (float)button_texture.height};
     button_texture_rect = Rectangle{0, 0, (float)button_texture.width/2, (float)button_texture.height};
 }

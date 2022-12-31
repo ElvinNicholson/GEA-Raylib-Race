@@ -9,8 +9,8 @@ player_collider(_player_collider), level_data_path(_level_data_path)
     gate_model.Unload();
 
     resetRace();
-    waypoint = LoadTexture("../Data/Texture/Waypoint.png");
-    waypoint_flag = LoadTexture("../Data/Texture/flag.png");
+    waypoint = LoadTexture("../Resources/Texture/Waypoint.png");
+    waypoint_flag = LoadTexture("../Resources/Texture/flag.png");
     waypoint_rotation = 0;
     waypoint_scale = 0.3;
 

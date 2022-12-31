@@ -1,10 +1,10 @@
 {
   "raceName" : "level 2",
   "numberOfLaps" : "3",
-  "modelFile" : "../Data/Models/overhead.obj",
-  "inactiveMaterialFile" : "../Data/Materials/Red.png",
-  "activeMaterialFile" : "../Data/Materials/Green.png",
-  "nextActiveMaterialFile" : "../Data/Materials/Yellow.png",
+  "modelFile" : "../Resources/Models/overhead.obj",
+  "inactiveMaterialFile" : "../Resources/Materials/Red.png",
+  "activeMaterialFile" : "../Resources/Materials/Green.png",
+  "nextActiveMaterialFile" : "../Resources/Materials/Yellow.png",
   "checkpoints" : [
     {
       "position" : ["0", "0", "0"],

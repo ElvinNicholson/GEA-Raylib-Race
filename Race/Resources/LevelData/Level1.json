@@ -1,0 +1,116 @@
+{
+  "raceName": "level 1",
+  "numberOfLaps": "3",
+  "modelFile": "../Resources/Models/Gate.obj",
+  "inactiveMaterialFile": "../Resources/Materials/Red.png",
+  "activeMaterialFile": "../Resources/Materials/Green.png",
+  "nextActiveMaterialFile": "../Resources/Materials/Yellow.png",
+  "checkpoints": [
+    {
+      "position": [
+        "0",
+        "0",
+        "0"
+      ],
+      "facingAxis": "z"
+    },
+    {
+      "position": [
+        "0",
+        "0",
+        "50"
+      ],
+      "facingAxis": "z"
+    },
+    {
+      "position": [
+        "50",
+        "0",
+        "90"
+      ],
+      "facingAxis": "x"
+    },
+    {
+      "position": [
+        "110",
+        "0",
+        "70"
+      ],
+      "facingAxis": "z"
+    },
+    {
+      "position": [
+        "80",
+        "0",
+        "-50"
+      ],
+      "facingAxis": "x"
+    }
+  ],
+  "racingBots": [
+    {
+      "botName": "Bot Beginner",
+      "spawnPosition": [
+        "0",
+        "2.5",
+        "-20"
+      ],
+      "spawnDirection": "-90",
+      "colorRGBA": [
+        "230",
+        "41",
+        "55",
+        "255"
+      ],
+      "minAngle": "40"
+    },
+    {
+      "botName": "Bot Expert",
+      "spawnPosition": [
+        "0",
+        "2.5",
+        "-20"
+      ],
+      "spawnDirection": "-90",
+      "colorRGBA": [
+        "0",
+        "228",
+        "48",
+        "255"
+      ],
+      "minAngle": "10"
+    },
+    {
+      "botName": "Bot Proficient",
+      "spawnPosition": [
+        "0",
+        "2.5",
+        "-20"
+      ],
+      "spawnDirection": "-90",
+      "colorRGBA": [
+        "253",
+        "249",
+        "0",
+        "255"
+      ],
+      "minAngle": "20"
+    },
+    {
+      "botName": "Bot Competent",
+      "spawnPosition": [
+        "0",
+        "2.5",
+        "-20"
+      ],
+      "spawnDirection": "-90",
+      "colorRGBA": [
+        "0",
+        "121",
+        "241",
+        "255"
+      ],
+      "minAngle": "30"
+    }
+  ]
+}

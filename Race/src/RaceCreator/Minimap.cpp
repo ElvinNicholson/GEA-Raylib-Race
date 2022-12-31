@@ -2,14 +2,14 @@
 
 Minimap::Minimap()
 {
-    alpha_discard = LoadShader(NULL, "../Data/Shaders/billboard.fs");
+    alpha_discard = LoadShader(NULL, "../Resources/Shaders/billboard.fs");
 
     minimap = LoadRenderTexture(300, 300);
 
-    minimap_racer = LoadTexture("../Data/Texture/minimap_player.png");
+    minimap_racer = LoadTexture("../Resources/Texture/minimap_player.png");
     minimap_racer_rect = Rectangle{0, 0, (float)minimap_racer.width, (float)minimap_racer.height};
 
-    minimap_checkpoint = LoadTexture("../Data/Texture/minimap_checkpoint.png");
+    minimap_checkpoint = LoadTexture("../Resources/Texture/minimap_checkpoint.png");
     minimap_checkpoint_rect = Rectangle{0, 0, (float)minimap_checkpoint.width, (float)minimap_checkpoint.height};
 
     bill_up = Vector3{ 1.0f, 0.0f, 0.0f };

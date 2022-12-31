@@ -6,8 +6,8 @@ yaw(spawn_direction), min_angle(_min_angle), bot_name(_bot_name)
     bounding_box = std::make_shared<raylib::BoundingBox>();
 
     model_pos = std::make_shared<raylib::Vector3>(spawn_pos);
-    model = LoadModel("../Data/Models/Car3.obj");
-    model_texture = LoadTexture("../Data/Materials/car Texture.png");
+    model = LoadModel("../Resources/Models/Car3.obj");
+    model_texture = LoadTexture("../Resources/Materials/car Texture.png");
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = model_texture;
 
     updateBox();

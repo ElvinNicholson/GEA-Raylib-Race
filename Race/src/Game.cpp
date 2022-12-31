@@ -7,7 +7,7 @@ Game::Game()
     car.reset(new Car(player_collider));
 
     // Initalise race to level 1
-    race.reset(new Race(player_collider, "../Data/LevelData/Level1.json"));
+    race.reset(new Race(player_collider, "../Resources/LevelData/Level1.json"));
 
     button_lvl1.reset(new Button("Level 1", Vector2{25, 25}));
     button_lvl2.reset(new Button("Level 2", Vector2{25, 225}));
@@ -42,12 +42,12 @@ void Game::update()
 
     if (button_lvl1->isClicked(GetMousePosition()))
     {
-        race.reset(new Race(player_collider, "../Data/LevelData/Level1.json"));
+        race.reset(new Race(player_collider, "../Resources/LevelData/Level1.json"));
     }
 
     if (button_lvl2->isClicked(GetMousePosition()))
     {
-        race.reset(new Race(player_collider, "../Data/LevelData/Level2.json"));
+        race.reset(new Race(player_collider, "../Resources/LevelData/Level2.json"));
     }
 
     if (button_reset->isClicked(GetMousePosition()))
