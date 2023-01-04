@@ -1,6 +1,6 @@
 {
   "raceName": "level 1",
-  "numberOfLaps": "3",
+  "numberOfLaps": "2",
   "modelFile": "../Resources/Models/Gate.obj",
   "inactiveMaterialFile": "../Resources/Materials/Red.png",
   "activeMaterialFile": "../Resources/Materials/Green.png",
@@ -26,21 +26,45 @@
       "position": [
         "50",
         "0",
-        "90"
+        "100"
       ],
       "facingAxis": "x"
     },
     {
       "position": [
-        "110",
+        "100",
         "0",
-        "70"
+        "100"
+      ],
+      "facingAxis": "x"
+    },
+    {
+      "position": [
+        "150",
+        "0",
+        "50"
       ],
       "facingAxis": "z"
     },
     {
       "position": [
-        "80",
+        "150",
+        "0",
+        "0"
+      ],
+      "facingAxis": "z"
+    },
+    {
+      "position": [
+        "100",
+        "0",
+        "-50"
+      ],
+      "facingAxis": "x"
+    },
+    {
+      "position": [
+        "50",
         "0",
         "-50"
       ],
@@ -50,12 +74,14 @@
   "racingBots": [
     {
       "botName": "Bot Beginner",
+      "carModelFile": "../Resources/Models/Convertible.obj",
+      "carMaterialFile": "../Resources/Materials/car Texture.png",
       "spawnPosition": [
         "0",
-        "2.5",
+        "0",
         "-20"
       ],
-      "spawnDirection": "-90",
+      "spawnDirection": "-80",
       "colorRGBA": [
         "230",
         "41",
@@ -66,12 +92,14 @@
     },
     {
       "botName": "Bot Expert",
+      "carModelFile": "../Resources/Models/Convertible.obj",
+      "carMaterialFile": "../Resources/Materials/Convertible Texture.png",
       "spawnPosition": [
         "0",
-        "2.5",
-        "-20"
+        "0",
+        "-30"
       ],
-      "spawnDirection": "-90",
+      "spawnDirection": "-70",
       "colorRGBA": [
         "0",
         "228",
@@ -82,12 +110,14 @@
     },
     {
       "botName": "Bot Proficient",
+      "carModelFile": "../Resources/Models/Car3.obj",
+      "carMaterialFile": "../Resources/Materials/1385 Jeep.png",
       "spawnPosition": [
         "0",
-        "2.5",
-        "-20"
+        "0",
+        "-50"
       ],
-      "spawnDirection": "-90",
+      "spawnDirection": "-80",
       "colorRGBA": [
         "253",
         "249",
@@ -98,10 +128,12 @@
     },
     {
       "botName": "Bot Competent",
+      "carModelFile": "../Resources/Models/Car3.obj",
+      "carMaterialFile": "../Resources/Materials/car Texture.png",
       "spawnPosition": [
         "0",
-        "2.5",
-        "-20"
+        "0",
+        "-60"
       ],
       "spawnDirection": "-90",
       "colorRGBA": [

@@ -7,7 +7,7 @@ Car::Car(std::shared_ptr<raylib::BoundingBox> _player_box) : player_box(_player_
     model_texture = LoadTexture("../Resources/Materials/car Texture.png");
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = model_texture;
 
-    model_pos = Vector3{0, 2.5, -20};
+    model_pos = Vector3{0, 0, -20};
     speed = 40;
 
     yaw = -90;

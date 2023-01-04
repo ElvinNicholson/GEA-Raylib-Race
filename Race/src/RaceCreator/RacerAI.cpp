@@ -1,13 +1,13 @@
 #include "RacerAI.h"
 
-RacerAI::RacerAI(raylib::Vector3 spawn_pos, float spawn_direction, raylib::Vector4 rgba_color, float _min_angle, std::string _bot_name) :
+RacerAI::RacerAI(raylib::Vector3 spawn_pos, float spawn_direction, raylib::Vector4 rgba_color, float _min_angle, std::string _bot_name, std::string _model_path, std::string _mat_path) :
 yaw(spawn_direction), min_angle(_min_angle), bot_name(_bot_name)
 {
     bounding_box = std::make_shared<raylib::BoundingBox>();
 
     model_pos = std::make_shared<raylib::Vector3>(spawn_pos);
-    model = LoadModel("../Resources/Models/Car3.obj");
-    model_texture = LoadTexture("../Resources/Materials/car Texture.png");
+    model = LoadModel(_model_path.c_str());
+    model_texture = LoadTexture(_mat_path.c_str());
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = model_texture;
 
     updateBox();

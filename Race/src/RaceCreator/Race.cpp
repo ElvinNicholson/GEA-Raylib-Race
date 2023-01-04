@@ -366,8 +366,10 @@ void Race::readLevel(std::string file_path)
         float spawn_dir = std::stof(botData.value("spawnDirection", "0"));
         float min_angle = std::stof(botData.value("minAngle", "20"));
         std::string bot_name = botData.value("botName", "Bot");
+        std::string model_path = botData.value("carModelFile", "");
+        std::string mat_path = botData.value("carMaterialFile", "");
 
-        ai_racers.emplace_back(new RacerAI(spawn_pos, spawn_dir, rgba, min_angle, bot_name));
+        ai_racers.emplace_back(new RacerAI(spawn_pos, spawn_dir, rgba, min_angle, bot_name, model_path, mat_path));
     }
 
     file.close();
