@@ -1,6 +1,6 @@
 #include "RacerAI.h"
 
-RacerAI::RacerAI(raylib::Vector3 spawn_pos, float spawn_direction, raylib::Vector4 rgba_color, float _min_angle, std::string _bot_name, std::string _model_path, std::string _mat_path) :
+RacerAI::RacerAI(raylib::Vector3 spawn_pos, float spawn_direction, std::string _color_hex, float _min_angle, std::string _bot_name, std::string _model_path, std::string _mat_path) :
 yaw(spawn_direction), min_angle(_min_angle), bot_name(_bot_name)
 {
     bounding_box = std::make_shared<raylib::BoundingBox>();
@@ -21,7 +21,14 @@ yaw(spawn_direction), min_angle(_min_angle), bot_name(_bot_name)
     is_running = true;
     finished_race = false;
 
-    color = raylib::Color((unsigned char)rgba_color.x, (unsigned char)rgba_color.y, (unsigned char)rgba_color.z, (unsigned char)rgba_color.w);
+    int r;
+    int g;
+    int b;
+    int a;
+    char const* color_hex = _color_hex.c_str();
+    std::sscanf(color_hex, "#%02x%02x%02x%02x", &a, &r, &g, &b);
+
+    color = raylib::Color(r, g, b, a);
 
     race_progress = std::make_shared<float>();
     direction_angle = std::make_shared<float>();
@@ -78,7 +85,7 @@ void RacerAI::update(float dt, raylib::Vector3 current_gate_pos, raylib::Vector3
 
 void RacerAI::render()
 {
-    DrawModel(model, *model_pos, 1, color);
+    DrawModel(model, *model_pos, 1, WHITE);
 }
 
 std::shared_ptr<raylib::BoundingBox> RacerAI::getBoundingBox()

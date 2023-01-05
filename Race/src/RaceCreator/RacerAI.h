@@ -9,7 +9,7 @@
 class RacerAI
 {
 public:
-    RacerAI(raylib::Vector3 spawn_pos, float spawn_direction, raylib::Vector4 rgba_color, float _min_angle, std::string _bot_name, std::string _model_path, std::string _mat_path);
+    RacerAI(raylib::Vector3 spawn_pos, float spawn_direction, std::string _color_hex, float _min_angle, std::string _bot_name, std::string _model_path, std::string _mat_path);
     void update(float dt, raylib::Vector3 current_gate_pos, raylib::Vector3 last_gate_pos);
     void render();
     void passGate(int gates_total, int laps_total);

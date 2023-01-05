@@ -1,68 +1,96 @@
 {
-  "raceName" : "level 2",
-  "numberOfLaps" : "3",
-  "modelFile" : "../Resources/Models/overhead.obj",
-  "inactiveMaterialFile" : "../Resources/Materials/Red.png",
-  "activeMaterialFile" : "../Resources/Materials/Green.png",
-  "nextActiveMaterialFile" : "../Resources/Materials/Yellow.png",
-  "checkpoints" : [
+  "raceName": "level 2",
+  "numberOfLaps": "3",
+  "modelFile": "../Resources/Models/overhead.obj",
+  "inactiveMaterialFile": "../Resources/Materials/Red.png",
+  "activeMaterialFile": "../Resources/Materials/Green.png",
+  "nextActiveMaterialFile": "../Resources/Materials/Yellow.png",
+  "checkpoints": [
     {
-      "position" : ["0", "0", "0"],
-      "facingAxis" : "z"
+      "position": [
+        "0",
+        "0",
+        "0"
+      ],
+      "facingAxis": "z"
     },
     {
-      "position" : ["0", "0", "20"],
-      "facingAxis" : "z"
+      "position": [
+        "0",
+        "0",
+        "20"
+      ],
+      "facingAxis": "z"
     },
     {
-      "position" : ["0", "0", "40"],
-      "facingAxis" : "z"
+      "position": [
+        "0",
+        "0",
+        "40"
+      ],
+      "facingAxis": "z"
     },
     {
-      "position" : ["0", "0", "60"],
-      "facingAxis" : "z"
-    },
-    {
-      "position" : ["0", "0", "80"],
-      "facingAxis" : "z"
+      "position": [
+        "0",
+        "0",
+        "60"
+      ],
+      "facingAxis": "z"
     }
   ],
-  "racingBots" : [
+  "racingBots": [
     {
-      "botName" : "Bot Beginner",
+      "botName": "Bot Beginner",
       "carModelFile": "../Resources/Models/Convertible.obj",
       "carMaterialFile": "../Resources/Materials/Convertible Texture.png",
-      "spawnPosition" : ["0", "0", "-20"],
-      "spawnDirection" : "-90",
-      "colorRGBA" : ["230", "41", "55", "255"],
-      "minAngle" : "40"
+      "spawnPosition": [
+        "0",
+        "0",
+        "-20"
+      ],
+      "spawnDirection": "-90",
+      "color": "#FFFFFFFF",
+      "minAngle": "40"
     },
     {
-      "botName" : "Bot Expert",
+      "botName": "Bot Expert",
       "carModelFile": "../Resources/Models/Convertible.obj",
       "carMaterialFile": "../Resources/Materials/Convertible Texture.png",
-      "spawnPosition" : ["0", "0", "-20"],
-      "spawnDirection" : "-90",
-      "colorRGBA" : ["0", "228", "48", "255"],
-      "minAngle" : "10"
+      "spawnPosition": [
+        "0",
+        "0",
+        "-20"
+      ],
+      "spawnDirection": "-90",
+      "color": "#FFFFFFFF",
+      "minAngle": "10"
     },
     {
-      "botName" : "Bot Proficient",
+      "botName": "Bot Proficient",
       "carModelFile": "../Resources/Models/Convertible.obj",
       "carMaterialFile": "../Resources/Materials/Convertible Texture.png",
-      "spawnPosition" : ["0", "0", "-20"],
-      "spawnDirection" : "-90",
-      "colorRGBA" : ["253", "249", "0", "255"],
-      "minAngle" : "20"
+      "spawnPosition": [
+        "0",
+        "0",
+        "-20"
+      ],
+      "spawnDirection": "-90",
+      "color": "#FFFFFFFF",
+      "minAngle": "20"
     },
     {
-      "botName" : "Bot Competent",
+      "botName": "Bot Competent",
       "carModelFile": "../Resources/Models/Convertible.obj",
       "carMaterialFile": "../Resources/Materials/Convertible Texture.png",
-      "spawnPosition" : ["0", "0", "-20"],
-      "spawnDirection" : "-90",
-      "colorRGBA" : ["0", "121", "241", "255"],
-      "minAngle" : "30"
+      "spawnPosition": [
+        "0",
+        "0",
+        "-20"
+      ],
+      "spawnDirection": "-90",
+      "color": "#FFFFFFFF",
+      "minAngle": "30"
     }
   ]
 }

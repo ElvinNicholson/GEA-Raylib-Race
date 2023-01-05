@@ -353,23 +353,15 @@ void Race::readLevel(std::string file_path)
         }
 
         raylib::Vector3 spawn_pos = Vector3{temp_vec.at(0), temp_vec.at(1), temp_vec.at(2)};
-        temp_vec.clear();
-
-        for (auto& pos : botData["colorRGBA"])
-        {
-            std::string val = pos;
-            temp_vec.emplace_back(std::stoi(val));
-        }
-
-        raylib::Vector4 rgba = Vector4{temp_vec.at(0), temp_vec.at(1), temp_vec.at(2), temp_vec.at(3)};
 
         float spawn_dir = std::stof(botData.value("spawnDirection", "0"));
         float min_angle = std::stof(botData.value("minAngle", "20"));
         std::string bot_name = botData.value("botName", "Bot");
         std::string model_path = botData.value("carModelFile", "");
         std::string mat_path = botData.value("carMaterialFile", "");
+        std::string color = botData.value("color", "#FFFFFFFF");
 
-        ai_racers.emplace_back(new RacerAI(spawn_pos, spawn_dir, rgba, min_angle, bot_name, model_path, mat_path));
+        ai_racers.emplace_back(new RacerAI(spawn_pos, spawn_dir, color, min_angle, bot_name, model_path, mat_path));
     }
 
     file.close();
