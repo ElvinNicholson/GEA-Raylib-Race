@@ -1,7 +1,7 @@
 {
   "raceName": "level 2",
   "numberOfLaps": "3",
-  "modelFile": "../Resources/Models/overhead.obj",
+  "modelFile": "../Resources/Models/Gate.obj",
   "inactiveMaterialFile": "../Resources/Materials/Red.png",
   "activeMaterialFile": "../Resources/Materials/Green.png",
   "nextActiveMaterialFile": "../Resources/Materials/Yellow.png",

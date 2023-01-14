@@ -79,10 +79,10 @@
       "spawnPosition": [
         "0",
         "0",
-        "-30"
+        "-50"
       ],
-      "spawnDirection": "-70",
-      "color": "#FFFFFFFF",
+      "spawnDirection": "-90",
+      "color": "#FF00FF7F",
       "minAngle": "10"
     },
     {
@@ -94,8 +94,8 @@
         "0",
         "-50"
       ],
-      "spawnDirection": "-80",
-      "color": "#FF00FA9A",
+      "spawnDirection": "-90",
+      "color": "#FFFFFF00",
       "minAngle": "20"
     },
     {
@@ -105,24 +105,24 @@
       "spawnPosition": [
         "0",
         "0",
-        "-60"
+        "-50"
       ],
       "spawnDirection": "-90",
-      "color": "#FF008000",
+      "color": "#FFFF6347",
       "minAngle": "30"
     },
     {
-      "botName": "Bot 1",
+      "botName": "Bot Beginner",
       "carModelFile": "../Resources/Models/Convertible.obj",
       "carMaterialFile": "../Resources/Materials/Convertible Texture.png",
       "spawnPosition": [
         "0",
         "0",
-        "-10"
+        "-50"
       ],
       "spawnDirection": "-90",
-      "color": "#FFFFFF00",
-      "minAngle": "10"
+      "color": "#FFD8BFD8",
+      "minAngle": "40"
     }
   ]
 }

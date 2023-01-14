@@ -68,19 +68,12 @@ void RacerAI::update(float dt, raylib::Vector3 current_gate_pos, raylib::Vector3
     updateRaceProgress(current_gate_pos, last_gate_pos);
 
     // If car is facing in the general direction or far away from the gate move forward
-    if (angle < 45 || displacement > 20)
+    // If car is near gate but not looking at it stop moving and turn towards gate
+    if ((angle < 45 || displacement > 20) || !(angle > min_angle && displacement > 10))
     {
         move({cos(yaw * DEG2RAD) * speed * dt, 0, -sin(yaw * DEG2RAD) * speed * dt});
         return;
     }
-
-    // If car is near gate but not looking at it stop moving and turn towards gate
-    if (angle > min_angle && displacement > 10)
-    {
-        return;
-    }
-
-    move({cos(yaw * DEG2RAD) * speed * dt, 0, -sin(yaw * DEG2RAD) * speed * dt});
 }
 
 void RacerAI::render()

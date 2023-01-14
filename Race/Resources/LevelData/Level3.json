@@ -1,0 +1,70 @@
+{
+  "raceName": "Level Name",
+  "numberOfLaps": "0",
+  "modelFile": "../Resources/Models/Gate.obj",
+  "inactiveMaterialFile": "../Resources/Materials/Red.png",
+  "activeMaterialFile": "../Resources/Materials/Green.png",
+  "nextActiveMaterialFile": "../Resources/Materials/Yellow.png",
+  "checkpoints": [
+    {
+      "position": [
+        "0",
+        "0",
+        "0"
+      ],
+      "facingAxis": "x"
+    },
+    {
+      "position": [
+        "50",
+        "0",
+        "50"
+      ],
+      "facingAxis": "z"
+    },
+    {
+      "position": [
+        "0",
+        "0",
+        "100"
+      ],
+      "facingAxis": "x"
+    },
+    {
+      "position": [
+        "-50",
+        "0",
+        "50"
+      ],
+      "facingAxis": "z"
+    }
+  ],
+  "racingBots": [
+    {
+      "botName": "Bot Expert",
+      "carModelFile": "../Resources/Models/Convertible.obj",
+      "carMaterialFile": "../Resources/Materials/Convertible Texture.png",
+      "spawnPosition": [
+        "-30",
+        "0",
+        "0"
+      ],
+      "spawnDirection": "0",
+      "color": "#FF3E394F",
+      "minAngle": "10"
+    },
+    {
+      "botName": "Bot Proficient",
+      "carModelFile": "../Resources/Models/Car3.obj",
+      "carMaterialFile": "../Resources/Materials/car Texture.png",
+      "spawnPosition": [
+        "-20",
+        "0",
+        "0"
+      ],
+      "spawnDirection": "0",
+      "color": "#FFFFC0CB",
+      "minAngle": "20"
+    }
+  ]
+}
